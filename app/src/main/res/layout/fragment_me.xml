@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/common_toolbar"/>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/rl_head"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/selector_item_touch">
+
+                    <ImageView
+                        android:id="@+id/iv_head"
+                        android:layout_width="65dp"
+                        android:layout_height="65dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_default_head_24dp"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:layout_toRightOf="@id/iv_head"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:id="@+id/tv_username"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="未设置"
+                            android:textSize="@dimen/big_textSize"/>
+
+                        <TextView
+                            android:id="@+id/tv_whats_up"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:lines="1"
+                            android:maxLength="16"
+                            android:singleLine="true"
+                            android:text="签名: 未设置"
+                            android:textColor="@color/secondary_textColor"
+                            android:textSize="@dimen/small_textSize"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_qr_code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="20dp"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_qr_code_24dp"
+                        android:tint="@color/secondary_textColor"/>
+
+                </RelativeLayout>
+
+
+                <TextView
+                    android:id="@+id/tv_wallet"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/primary_item_size"
+                    android:layout_marginTop="@dimen/primary_margin_top"
+                    android:background="@drawable/selector_item_touch"
+                    android:drawableLeft="@drawable/ic_wallet_24dp"
+                    android:drawablePadding="20dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/primary_padding_left"
+                    android:text="钱包"/>
+
+                <TextView
+                    android:id="@+id/tv_order"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/primary_item_size"
+                    android:layout_marginTop="@dimen/primary_margin_top"
+                    android:background="@drawable/selector_item_touch"
+                    android:drawableLeft="@drawable/ic_order_24dp"
+                    android:drawablePadding="20dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/primary_padding_left"
+                    android:text="订单"/>
+
+                <include layout="@layout/common_divider"/>
+
+                <TextView
+                    android:id="@+id/tv_task"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/primary_item_size"
+                    android:background="@drawable/selector_item_touch"
+                    android:drawableLeft="@drawable/ic_task_24dp"
+                    android:drawablePadding="20dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/primary_padding_left"
+                    android:text="赏金任务"/>
+
+                <include layout="@layout/common_divider"/>
+
+                <TextView
+                    android:id="@+id/tv_soup"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/primary_item_size"
+                    android:background="@drawable/selector_item_touch"
+                    android:drawableLeft="@drawable/ic_soup_24dp"
+                    android:drawablePadding="20dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/primary_padding_left"
+                    android:text="我的鸡汤"/>
+
+                <include layout="@layout/common_divider"/>
+
+
+                <TextView
+                    android:id="@+id/tv_laboratory"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/primary_item_size"
+                    android:background="@drawable/selector_item_touch"
+                    android:drawableLeft="@drawable/ic_laboratory_24dp"
+                    android:drawablePadding="20dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/primary_padding_left"
+                    android:text="实验室"/>
+
+                <include layout="@layout/common_divider"/>
+
+                <TextView
+                    android:id="@+id/tv_feedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/primary_item_size"
+                    android:background="@drawable/selector_item_touch"
+                    android:drawableLeft="@drawable/ic_feedback_24dp"
+                    android:drawablePadding="20dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/primary_padding_left"
+                    android:text="帮助与反馈"/>
+
+
+                <TextView
+                    android:id="@+id/tv_setting"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/primary_item_size"
+                    android:layout_marginBottom="@dimen/primary_margin_bottom"
+                    android:layout_marginTop="@dimen/primary_margin_top"
+                    android:background="@drawable/selector_item_touch"
+                    android:drawableLeft="@drawable/ic_settings_24dp"
+                    android:drawablePadding="20dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/primary_padding_left"
+                    android:text="设置"/>
+
+
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+</LinearLayout>

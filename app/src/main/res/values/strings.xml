@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">友圈</string>
+
+    <string name="title_home" translatable="false">首页</string>
+    <string name="title_dashboard" translatable="false">关注</string>
+    <string name="title_me" translatable="false">我的</string>
+
+    <!--解决xml报错问题-->
+    <item name="visible" type="id"/>
+    <item name="masked" type="id"/>
+</resources>

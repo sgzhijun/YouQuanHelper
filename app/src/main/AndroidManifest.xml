@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.liompei.youquanhelper">
+
+    <!-- 基础模块（必须加入以下声明）START -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 基础模块 END -->
+
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".main.activity.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <!--图片裁剪器-->
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".MainActivity">
+        </activity>
+        <activity android:name=".ui.me.activity.MyProfileActivity">
+        </activity>
+        <activity android:name=".ui.me.activity.MyWalletActivity">
+        </activity>
+        <activity android:name=".ui.me.activity.MyOrderActivity">
+        </activity>
+        <activity android:name=".ui.me.activity.MyTaskActivity">
+        </activity>
+        <activity android:name=".ui.me.activity.MyLaboratoryActivity">
+        </activity>
+        <activity android:name=".main.activity.SignInActivity">
+        </activity>
+        <activity android:name=".main.activity.SignUpActivity">
+        </activity>
+        <activity android:name=".main.activity.SignInByPhoneActivity">
+        </activity>
+        <activity android:name=".main.activity.SettingActivity">
+        </activity>
+    </application>
+
+</manifest>

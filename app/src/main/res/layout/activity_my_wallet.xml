@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.me.activity.MyWalletActivity">
+
+    <include layout="@layout/common_toolbar"/>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@color/primary"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/primary_margin_left"
+                        android:layout_marginTop="@dimen/primary_margin_top"
+                        android:text="友币余额"
+                        android:textColor="@color/window_background"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/primary_margin_left"
+                        android:layout_marginTop="40dp"
+                        android:text="0.0"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/big_big_textSize"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/primary_margin_left"
+                        android:layout_marginTop="@dimen/primary_margin_top"
+                        android:text="圈币余额"
+                        android:textColor="@color/window_background"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/primary_margin_left"
+                        android:layout_marginTop="40dp"
+                        android:text="0.0"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/big_big_textSize"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/primary_item_size"
+                android:layout_marginTop="@dimen/primary_margin_top"
+                android:background="@drawable/selector_item_touch"
+                android:drawableLeft="@drawable/ic_recharge_24dp"
+                android:drawablePadding="20dp"
+                android:drawableRight="@drawable/ic_keyboard_arrow_right_24dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/primary_padding_left"
+                android:paddingRight="10dp"
+                android:text="充值"/>
+
+            <include layout="@layout/common_divider"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/primary_item_size"
+                android:background="@drawable/selector_item_touch"
+                android:drawableLeft="@drawable/ic_withdrawals_24dp"
+                android:drawablePadding="20dp"
+                android:drawableRight="@drawable/ic_keyboard_arrow_right_24dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/primary_padding_left"
+                android:paddingRight="10dp"
+                android:text="提现"/>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+
+</LinearLayout>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="基本设置">
+
+        <SwitchPreference android:title="自动下载更新"/>
+
+        <Preference
+            android:summary="包括图片/音频和视频缓存(共 73.92 MB)"
+            android:title="清除缓存"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="通知设置">
+
+        <SwitchPreference android:title="推送消息"/>
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="账号设置">
+
+        <Preference android:title="账号绑定与安全"/>
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="关于与帮助">
+
+        <Preference android:title="意见反馈"/>
+        <Preference android:title="去评价"/>
+        <Preference android:title="检查更新"/>
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="其他">
+
+        <Preference android:title="联系我们"/>
+        <Preference
+            android:key="app_signOut"
+            android:title="退出账号"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

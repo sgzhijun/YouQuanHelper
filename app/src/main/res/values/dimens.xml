@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <!--字体大小-->
+    <dimen name="so_so_small_textSize">11sp</dimen>
+    <dimen name="so_small_textSize">12sp</dimen>
+    <dimen name="small_textSize">13sp</dimen>
+    <dimen name="primary_textSize">14sp</dimen>
+    <dimen name="big_textSize">15sp</dimen>
+    <dimen name="so_big_textSize">16sp</dimen>
+    <dimen name="so_so_big_textSize">17sp</dimen>
+    <dimen name="so_so_so_big_textSize">19sp</dimen>
+    <dimen name="big_big_textSize">60sp</dimen>
+
+    <!--item高度-->
+    <dimen name="primary_item_size">48dp</dimen>
+    <!--左方距离-->
+    <dimen name="primary_padding_left">24dp</dimen>
+    <dimen name="primary_margin_left">24dp</dimen>
+    <!--右方距离-->
+    <dimen name="primary_padding_right">24dp</dimen>
+    <dimen name="primary_margin_right">24dp</dimen>
+    <!--上方距离-->
+    <dimen name="primary_padding_top">24dp</dimen>
+    <dimen name="primary_margin_top">24dp</dimen>
+    <!--下方距离-->
+    <dimen name="primary_padding_bottom">24dp</dimen>
+    <dimen name="primary_margin_bottom">24dp</dimen>
+</resources>

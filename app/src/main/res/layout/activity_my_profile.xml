@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.me.activity.MyProfileActivity">
+
+    <include layout="@layout/common_toolbar"/>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:id="@+id/ll_head"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/selector_item_touch"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/primary_margin_left"
+                    android:layout_weight="1"
+                    android:text="头像"
+                    android:textSize="@dimen/big_textSize"/>
+
+
+                <ImageView
+                    android:id="@+id/iv_head"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/primary_margin_right"
+                    android:background="@drawable/ic_default_head_24dp"/>
+            </LinearLayout>
+
+            <include layout="@layout/common_divider"/>
+
+            <LinearLayout
+                android:id="@+id/ll_username"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/primary_item_size"
+                android:background="@drawable/selector_item_touch"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/primary_margin_left"
+                    android:layout_weight="1"
+                    android:text="用户名"
+                    android:textSize="@dimen/big_textSize"/>
+
+                <TextView
+                    android:id="@+id/tv_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/primary_margin_right"
+                    android:text="未设置"
+                    android:textColor="@color/secondary_textColor"
+                    android:textSize="@dimen/small_textSize"/>
+
+            </LinearLayout>
+
+            <include
+                layout="@layout/common_divider"
+                android:visibility="gone"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/primary_item_size"
+                android:background="@drawable/selector_item_touch"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/primary_margin_left"
+                    android:layout_weight="1"
+                    android:text="友圈号"
+                    android:textSize="@dimen/big_textSize"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/primary_margin_right"
+                    android:text="未设置"
+                    android:textColor="@color/secondary_textColor"
+                    android:textSize="@dimen/small_textSize"/>
+
+            </LinearLayout>
+
+            <include layout="@layout/common_divider"/>
+
+            <LinearLayout
+                android:id="@+id/ll_qr_code"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/primary_item_size"
+                android:background="@drawable/selector_item_touch"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/primary_margin_left"
+                    android:layout_weight="1"
+                    android:text="二维码名片"
+                    android:textSize="@dimen/big_textSize"/>
+
+                <ImageView
+                    android:id="@+id/iv_qr_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/primary_margin_right"
+                    android:src="@drawable/ic_qr_code_24dp"
+                    android:tint="@color/secondary_textColor"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_sex"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/primary_item_size"
+                android:layout_marginTop="@dimen/primary_margin_top"
+                android:background="@drawable/selector_item_touch"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/primary_margin_left"
+                    android:layout_weight="1"
+                    android:text="性别"
+                    android:textSize="@dimen/big_textSize"/>
+
+                <TextView
+                    android:id="@+id/tv_sex"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/primary_margin_right"
+                    android:text="未设置"
+                    android:textColor="@color/secondary_textColor"
+                    android:textSize="@dimen/small_textSize"/>
+
+            </LinearLayout>
+
+            <include layout="@layout/common_divider"/>
+
+            <LinearLayout
+                android:id="@+id/ll_location"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/primary_item_size"
+                android:background="@drawable/selector_item_touch"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/primary_margin_left"
+                    android:layout_weight="1"
+                    android:text="地区"
+                    android:textSize="@dimen/big_textSize"/>
+
+                <TextView
+                    android:id="@+id/tv_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/primary_margin_right"
+                    android:text="未设置"
+                    android:textColor="@color/secondary_textColor"
+                    android:textSize="@dimen/small_textSize"/>
+
+            </LinearLayout>
+
+            <include layout="@layout/common_divider"/>
+
+            <LinearLayout
+                android:id="@+id/ll_whats_up"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/primary_item_size"
+                android:layout_marginBottom="@dimen/primary_margin_bottom"
+                android:background="@drawable/selector_item_touch"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/primary_margin_left"
+                    android:layout_weight="1"
+                    android:text="个性签名"
+                    android:textSize="@dimen/big_textSize"/>
+
+                <TextView
+                    android:id="@+id/tv_whats_up"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/primary_margin_right"
+                    android:text="未设置"
+                    android:textColor="@color/secondary_textColor"
+                    android:textSize="@dimen/small_textSize"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+
+</LinearLayout>
