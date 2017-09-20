@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import com.liompei.youquanhelper.base.BaseActivity;
 import com.liompei.youquanhelper.ui.dashboard.fragment.DashboardFragment;
 import com.liompei.youquanhelper.ui.home.fragment.HomeFragment;
+import com.liompei.youquanhelper.ui.me.activity.MyProfileActivity;
 import com.liompei.youquanhelper.ui.me.fragment.MeFragment;
 import com.liompei.zxlog.Zx;
 
@@ -72,7 +73,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         mBottomNavigationView.setOnNavigationItemSelectedListener(this);
         mBottomNavigationView.setOnNavigationItemReselectedListener(this);
         mViewPager.addOnPageChangeListener(this);
-        mViewPager.setCurrentItem(2);
+        mViewPager.setCurrentItem(0);
 
     }
 
@@ -159,5 +160,19 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 Zx.d("重复点击我的");
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case MyProfileActivity.MY_PROFILE:  //修改了用户资料
+                    if (mMeFragment != null) {
+                        mMeFragment.updateUserData();
+                    }
+                    break;
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

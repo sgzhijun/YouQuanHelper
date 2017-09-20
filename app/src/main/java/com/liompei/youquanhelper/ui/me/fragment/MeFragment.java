@@ -161,6 +161,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener, Sw
     //更新资料
     public void updateUserData() {
         Zx.d("更新资料");
+        setUserData();
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
@@ -169,4 +170,5 @@ public class MeFragment extends BaseFragment implements View.OnClickListener, Sw
     public void onRefresh() {
         updateUserData();
     }
+
 }

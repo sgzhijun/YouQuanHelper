@@ -1,21 +1,27 @@
 package com.liompei.youquanhelper.ui.me.activity;
 
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVFile;
+import com.avos.avoscloud.ProgressCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.liompei.youquanhelper.R;
 import com.liompei.youquanhelper.base.BaseActivity;
 import com.liompei.youquanhelper.bean.MyUser;
+import com.liompei.youquanhelper.main.activity.EditWhatsUpActivity;
 import com.liompei.youquanhelper.util.GlideUtils;
+import com.liompei.youquanhelper.widget.EditUpdateDialog;
 import com.liompei.zxlog.Zx;
 import com.vondear.rxtools.RxImageUtils;
 import com.vondear.rxtools.RxPhotoUtils;
@@ -23,6 +29,7 @@ import com.vondear.rxtools.view.dialog.RxDialogChooseImage;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import static com.vondear.rxtools.view.dialog.RxDialogChooseImage.LayoutType.TITLE;
 
@@ -33,6 +40,8 @@ import static com.vondear.rxtools.view.dialog.RxDialogChooseImage.LayoutType.TIT
  * remark:个人信息
  */
 public class MyProfileActivity extends BaseActivity implements View.OnClickListener {
+
+    public static final int MY_PROFILE = 3032;
 
     private LinearLayout ll_head;  //头像
     private ImageView iv_head;
@@ -47,13 +56,13 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
     private LinearLayout ll_whats_up;  //签名
     private TextView tv_whats_up;
 
-
+    private boolean needChanged = false;  //是否需要返回刷新
     private Uri resultUri;
 
     public static void start(BaseActivity activity) {
         Intent intent = new Intent();
         intent.setClass(activity, MyProfileActivity.class);
-        activity.startActivity(intent);
+        activity.startActivityForResult(intent, MY_PROFILE);
     }
 
     @Override
@@ -105,14 +114,42 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
                 RxImageUtils.showBigImageView(mBaseActivity, resultUri);
                 break;
             case R.id.ll_username:  //用户名
+                final EditUpdateDialog dialogUsername = new EditUpdateDialog(mBaseActivity);
+                dialogUsername.setTitle("修改用户名");
+                dialogUsername.setEditText(MyUser.getCurrentUser().getUsername());
+                dialogUsername.setOnSureListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if ("".equals(dialogUsername.getStringContent())) {
+                            Zx.show("请输入内容");
+                            return;
+                        }
+                        dialogUsername.dismiss();
+                        netUpdateUsername(dialogUsername.getStringContent());
+                    }
+                });
+                dialogUsername.show();
                 break;
             case R.id.ll_qr_code:  //二维码
                 break;
             case R.id.ll_sex:  //性别
+                AlertDialog.Builder sexDialog = new AlertDialog.Builder(mBaseActivity);
+                sexDialog.setItems(new String[]{"女", "男"}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (i == 0) {  //女
+                            netUpdateSex(false);
+                        } else if (i == 1) {  //男
+                            netUpdateSex(true);
+                        }
+                    }
+                });
+                sexDialog.show();
                 break;
             case R.id.ll_location:  //地址
                 break;
             case R.id.ll_whats_up:  //个性签名
+                EditWhatsUpActivity.startForResult(mBaseActivity);
                 break;
         }
     }
@@ -157,18 +194,70 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
-    private void netUpdateProfile(File profilePhoto) {
+    private void netUpdateProfile(final File profilePhoto) {
         showProgress();
+        try {
+            Zx.d("图片路径: " + profilePhoto.getAbsolutePath());
+            final AVFile avFile = AVFile.withFile(profilePhoto.getName(), profilePhoto);
+            avFile.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(AVException e) {
+                    if (e == null) {
+                        Zx.d("上传文件成功");
+                        final MyUser myUser = MyUser.getCurrentUser(MyUser.class);
+                        myUser.setProfilePhoto(avFile);
+                        myUser.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(AVException e) {
+                                hideProgress();
+                                if (e == null) {
+                                    Zx.show("头像上传成功");
+                                    Zx.d("头像上传成功");
+                                    needChanged=true;
+                                    resultUri = Uri.fromFile(profilePhoto);
+                                    GlideUtils.loadHead(iv_head, myUser.getProfilePhoto().getUrl());
+                                } else {
+                                    Zx.show("头像上传失败");
+                                    Zx.d("头像上传失败");
+                                }
+                            }
+                        });
+                    } else {
+                        hideProgress();
+                        Zx.show("头像上传失败" + e.getMessage());
+                        Zx.e("头像上传失败" + e.getMessage());
+                    }
+                }
+            }, new ProgressCallback() {
+                @Override
+                public void done(Integer integer) {
+                    Zx.d("上传进度: " + integer.toString());
+                }
+            });
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     private void netUpdateSex(Boolean sex) {
+        showProgress();
         final MyUser myUser = MyUser.getCurrentUser(MyUser.class);
-        myUser.put("sex", sex);
+        myUser.setSex(sex);
         myUser.saveInBackground(new SaveCallback() {
             @Override
             public void done(AVException e) {
+                hideProgress();
                 if (e == null) {
-                    MyUser.getCurrentUser().get("sex");
+                    //设置性别
+                    if (null != myUser.getSex() && myUser.getSex()) {
+                        tv_sex.setText("男");
+                    } else {
+                        tv_sex.setText("女");
+                    }
+                    needChanged=true;
+                    Zx.e("修改成功");
+                    Zx.show("修改成功");
                 } else {
                     Zx.e(e.getCode() + e.getMessage());
                     Zx.show(e.getCode() + e.getMessage());
@@ -176,6 +265,28 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
             }
         });
     }
+
+    private void netUpdateUsername(String username) {
+        showProgress();
+        final MyUser myUser = MyUser.getCurrentUser(MyUser.class);
+        myUser.setUsername(username);
+        myUser.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                hideProgress();
+                if (e == null) {
+                    needChanged=true;
+                    tv_username.setText(myUser.getUsername());
+                    Zx.show("修改成功");
+                    Zx.d("修改成功");
+                } else {
+                    Zx.show(e.getMessage());
+                    Zx.e(e.getMessage());
+                }
+            }
+        });
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -201,19 +312,28 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
             case UCrop.REQUEST_CROP://UCrop裁剪之后的处理
                 if (resultCode == RESULT_OK) {
                     Zx.d("UCrop裁剪之后的处理");
-                    resultUri = UCrop.getOutput(data);
-                    netUpdateProfile(new File(RxPhotoUtils.getImageAbsolutePath(this, resultUri)));
-//                    netUpdateProfile(new File(RxPhotoUtils.getImageAbsolutePath(this, resultUri)));
+//                    resultUri = UCrop.getOutput(data);
+                    netUpdateProfile(new File(RxPhotoUtils.getImageAbsolutePath(this, UCrop.getOutput(data))));
                     //从Uri中加载图片 并将其转化成File文件返回
-                    Zx.d(new File(RxPhotoUtils.getImageAbsolutePath(this, resultUri)));
-                    Zx.d("裁剪后图片地址" + resultUri.toString());
                 } else if (resultCode == UCrop.RESULT_ERROR) {
                     final Throwable cropError = UCrop.getError(data);
                 }
                 break;
             case UCrop.RESULT_ERROR://UCrop裁剪错误之后的处理
-                Zx.d("UCrop裁剪错误之后的处理");
-                final Throwable cropError = UCrop.getError(data);
+                if (resultCode == RESULT_OK) {
+                    Zx.d("UCrop裁剪错误之后的处理");
+                    final Throwable cropError = UCrop.getError(data);
+                }
+                break;
+            case EditWhatsUpActivity.EDIT_WHATSUP:  //设置签名
+                if (resultCode == RESULT_OK) {
+                    needChanged=true;
+                    if (null == MyUser.getCurrentUser(MyUser.class).getWhatsUp() || "".equals(MyUser.getCurrentUser(MyUser.class).getWhatsUp())) {
+                        tv_whats_up.setText("未设置");
+                    } else {
+                        tv_whats_up.setText(MyUser.getCurrentUser(MyUser.class).getWhatsUp());
+                    }
+                }
                 break;
             default:
                 break;
@@ -221,5 +341,11 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-
+    @Override
+    public void onBackPressed() {
+        if (needChanged) {
+            setResult(RESULT_OK);
+        }
+        super.onBackPressed();
+    }
 }

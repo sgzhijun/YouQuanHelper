@@ -28,7 +28,7 @@ public class MyUser extends AVUser {
     }
 
     public String getWhatsUp() {
-        return this.getString("location");
+        return this.getString("whatsUp");
     }
 
     public void setWhatsUp(String whatsUp) {

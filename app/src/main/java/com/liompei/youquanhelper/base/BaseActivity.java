@@ -1,6 +1,7 @@
 package com.liompei.youquanhelper.base;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -67,6 +68,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode) {
+        super.startActivityForResult(intent, requestCode);
+        overridePendingTransition(R.anim.anim_in_right, R.anim.anim_out_left);
+    }
+
     @Override
     public void startActivity(Intent intent) {
         super.startActivity(intent);
@@ -92,11 +100,16 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setCanceledOnTouchOutside(false);
+            mProgressDialog.setCancelable(false);
             mProgressDialog.setMessage("请稍后...");
         }
         if (!mProgressDialog.isShowing()) {
             mProgressDialog.show();
         }
+    }
+
+    protected void setOnProgressCancelListener(@Nullable DialogInterface.OnCancelListener listener) {
+        mProgressDialog.setOnCancelListener(listener);
     }
 
     protected void hideProgress() {

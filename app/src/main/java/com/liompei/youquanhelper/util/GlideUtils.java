@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import static cn.bmob.v3.Bmob.getCacheDir;
+import static com.avos.avoscloud.AVPersistenceUtils.getCacheDir;
 
 /**
  * Created by Liompei
@@ -43,6 +43,7 @@ public class GlideUtils {
                 .apply(mOptionsHead)
                 .into(imageView);
     }
+
 
     public static void initUCrop(Activity activity, Uri uri) {
         //Uri destinationUri = RxPhotoUtils.createImagePathUri(this);

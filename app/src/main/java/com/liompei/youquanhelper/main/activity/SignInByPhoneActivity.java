@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVSMS;
+import com.avos.avoscloud.AVSMSOption;
 import com.avos.avoscloud.LogInCallback;
 import com.avos.avoscloud.RequestMobileCodeCallback;
 import com.liompei.youquanhelper.App;
@@ -119,7 +121,7 @@ public class SignInByPhoneActivity extends BaseActivity implements View.OnClickL
         }
     }
 
-    private CountDownTimer countDownTimer = new CountDownTimer(600000, 1000) {
+    private CountDownTimer countDownTimer = new CountDownTimer(120000, 1000) {
         @Override
         public void onTick(long millisUntilFinished) {
             if (tv_get_code != null)
@@ -138,7 +140,11 @@ public class SignInByPhoneActivity extends BaseActivity implements View.OnClickL
 
     private void netGetCode(String phoneNumber) {
         //发送验证码
-        MyUser.requestLoginSmsCodeInBackground(phoneNumber, new RequestMobileCodeCallback() {
+        AVSMSOption option = new AVSMSOption();
+        option.setTtl(2);  //验证码有效时间
+//        option.setApplicationName("友圈");
+        option.setOperation("一键登录");
+        AVSMS.requestSMSCodeInBackground(phoneNumber, option, new RequestMobileCodeCallback() {
             @Override
             public void done(AVException e) {
                 if (e == null) {//验证码发送成功
@@ -157,6 +163,7 @@ public class SignInByPhoneActivity extends BaseActivity implements View.OnClickL
 
     private void netSignUp(String phoneNumber, String smsCode) {
         showProgress();
+
         MyUser.signUpOrLoginByMobilePhoneInBackground(phoneNumber, smsCode, MyUser.class, new LogInCallback<MyUser>() {
             @Override
             public void done(MyUser myUser, AVException e) {
