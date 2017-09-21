@@ -1,4 +1,4 @@
-package com.liompei.youquanhelper.main.activity;
+package com.liompei.youquanhelper.ui.me.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,13 +13,14 @@ import com.avos.avoscloud.SaveCallback;
 import com.liompei.youquanhelper.R;
 import com.liompei.youquanhelper.base.BaseActivity;
 import com.liompei.youquanhelper.bean.MyUser;
+import com.liompei.youquanhelper.util.EditTextUtils;
 import com.liompei.zxlog.Zx;
 
 /**
  * Created by Liompei
  * time : 2017/9/20 16:29
  * 1137694912@qq.com
- * remark:编辑长文字
+ * remark:编辑签名
  */
 public class EditWhatsUpActivity extends BaseActivity {
 
@@ -69,6 +70,7 @@ public class EditWhatsUpActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_complete:  //完成
+                EditTextUtils.closeKeyboard(EditWhatsUpActivity.this,et_content);
                 final String mEtContent = et_content.getText().toString().trim();
                 if (mEtContent.equals(MyUser.getCurrentUser(MyUser.class).getWhatsUp())) {
                     //签名没有改变的情况下不进行操作
@@ -96,12 +98,14 @@ public class EditWhatsUpActivity extends BaseActivity {
                     .setNegativeButton("不保存", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+                            EditTextUtils.closeKeyboard(EditWhatsUpActivity.this,et_content);
                             finish();
                         }
                     })
                     .setPositiveButton("保存", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+                            EditTextUtils.closeKeyboard(EditWhatsUpActivity.this,et_content);
                             //进行网络请求保存数据
                             netUpdateWhatsUp(mEtContent);
                         }

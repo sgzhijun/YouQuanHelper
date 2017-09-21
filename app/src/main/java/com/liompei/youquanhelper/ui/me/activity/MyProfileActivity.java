@@ -19,7 +19,6 @@ import com.avos.avoscloud.SaveCallback;
 import com.liompei.youquanhelper.R;
 import com.liompei.youquanhelper.base.BaseActivity;
 import com.liompei.youquanhelper.bean.MyUser;
-import com.liompei.youquanhelper.main.activity.EditWhatsUpActivity;
 import com.liompei.youquanhelper.util.GlideUtils;
 import com.liompei.youquanhelper.widget.EditUpdateDialog;
 import com.liompei.zxlog.Zx;
@@ -111,7 +110,8 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
                 dialogChooseImage.show();
                 break;
             case R.id.iv_head:  //查看头像
-                RxImageUtils.showBigImageView(mBaseActivity, resultUri);
+                Zx.d(MyUser.getCurrentUser(MyUser.class).getProfilePhoto().getUrl());
+                RxImageUtils.showBigImageView(mBaseActivity, Uri.parse(MyUser.getCurrentUser(MyUser.class).getProfilePhoto().getUrl()));
                 break;
             case R.id.ll_username:  //用户名
                 final EditUpdateDialog dialogUsername = new EditUpdateDialog(mBaseActivity);
@@ -213,7 +213,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
                                 if (e == null) {
                                     Zx.show("头像上传成功");
                                     Zx.d("头像上传成功");
-                                    needChanged=true;
+                                    needChanged = true;
                                     resultUri = Uri.fromFile(profilePhoto);
                                     GlideUtils.loadHead(iv_head, myUser.getProfilePhoto().getUrl());
                                 } else {
@@ -255,7 +255,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
                     } else {
                         tv_sex.setText("女");
                     }
-                    needChanged=true;
+                    needChanged = true;
                     Zx.e("修改成功");
                     Zx.show("修改成功");
                 } else {
@@ -275,7 +275,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
             public void done(AVException e) {
                 hideProgress();
                 if (e == null) {
-                    needChanged=true;
+                    needChanged = true;
                     tv_username.setText(myUser.getUsername());
                     Zx.show("修改成功");
                     Zx.d("修改成功");
@@ -327,7 +327,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
                 break;
             case EditWhatsUpActivity.EDIT_WHATSUP:  //设置签名
                 if (resultCode == RESULT_OK) {
-                    needChanged=true;
+                    needChanged = true;
                     if (null == MyUser.getCurrentUser(MyUser.class).getWhatsUp() || "".equals(MyUser.getCurrentUser(MyUser.class).getWhatsUp())) {
                         tv_whats_up.setText("未设置");
                     } else {

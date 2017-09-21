@@ -138,7 +138,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener, Sw
             tv_username.setText(myUser.getUsername());
         }
         //签名
-        if (myUser.getWhatsUp() == null) {
+        if (myUser.getWhatsUp() == null || "".equals(myUser.getWhatsUp())) {
             tv_whats_up.setText("签名: 未设置");
         } else {
             tv_whats_up.setText("签名: " + myUser.getWhatsUp());

@@ -1,7 +1,10 @@
 package com.liompei.youquanhelper.util;
 
+import android.app.Activity;
+import android.content.Context;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import java.util.regex.Matcher;
@@ -55,4 +58,11 @@ public class EditTextUtils {
 //        System.out.println(m.find());
         return m.find();
     }
+
+    //关闭软键盘
+    public static void closeKeyboard(Activity activity, EditText editText) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+    }
+
 }

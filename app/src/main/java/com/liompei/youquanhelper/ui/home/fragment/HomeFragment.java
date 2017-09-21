@@ -41,12 +41,21 @@ public class HomeFragment extends BaseFragment {
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                netTest();
+                netGetMainList();
+            }
+        });
+        mRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mRefreshLayout.setRefreshing(true);
+                netGetMainList();
             }
         });
     }
 
-    private void netTest() {
+
+
+    private void netGetMainList() {
         mRefreshLayout.setRefreshing(false);
     }
 }
