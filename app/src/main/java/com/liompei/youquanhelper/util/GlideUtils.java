@@ -20,8 +20,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import static com.avos.avoscloud.AVPersistenceUtils.getCacheDir;
-
 /**
  * Created by Liompei
  * Time 2017/9/13 23:42
@@ -52,7 +50,7 @@ public class GlideUtils {
         long time = System.currentTimeMillis();
         String imageName = timeFormatter.format(new Date(time));
 
-        Uri destinationUri = Uri.fromFile(new File(getCacheDir(), imageName + ".jpeg"));
+        Uri destinationUri = Uri.fromFile(new File(activity.getCacheDir(), imageName + ".jpeg"));
 
         UCrop.Options options = new UCrop.Options();
         //设置裁剪图片可操作的手势
