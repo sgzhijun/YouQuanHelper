@@ -81,4 +81,5 @@ public class App extends Application {
         //在应用发布之前，请关闭调试日志，以免暴露敏感数据。
         AVOSCloud.setDebugLogEnabled(true);
     }
+
 }

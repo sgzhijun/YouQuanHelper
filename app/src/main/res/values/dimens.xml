@@ -4,14 +4,14 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <!--字体大小-->
-    <dimen name="so_so_small_textSize">11sp</dimen>
-    <dimen name="so_small_textSize">12sp</dimen>
-    <dimen name="small_textSize">13sp</dimen>
-    <dimen name="primary_textSize">14sp</dimen>
-    <dimen name="big_textSize">15sp</dimen>
-    <dimen name="so_big_textSize">16sp</dimen>
-    <dimen name="so_so_big_textSize">17sp</dimen>
-    <dimen name="so_so_so_big_textSize">19sp</dimen>
+    <dimen name="so_so_small_textSize">13sp</dimen>
+    <dimen name="so_small_textSize">14sp</dimen>
+    <dimen name="small_textSize">15sp</dimen>
+    <dimen name="primary_textSize">16sp</dimen>
+    <dimen name="big_textSize">17sp</dimen>
+    <dimen name="so_big_textSize">18sp</dimen>
+    <dimen name="so_so_big_textSize">19sp</dimen>
+    <dimen name="so_so_so_big_textSize">20sp</dimen>
     <dimen name="big_big_textSize">60sp</dimen>
 
     <!--item高度-->
@@ -28,4 +28,7 @@
     <!--下方距离-->
     <dimen name="primary_padding_bottom">24dp</dimen>
     <dimen name="primary_margin_bottom">24dp</dimen>
+
+    <!--知乎图片选择器-->
+    <dimen name="grid_expected_size">120dp</dimen>
 </resources>

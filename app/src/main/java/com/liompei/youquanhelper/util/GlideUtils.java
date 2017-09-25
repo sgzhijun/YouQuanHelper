@@ -6,12 +6,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.liompei.youquanhelper.App;
 import com.liompei.youquanhelper.R;
+import com.liompei.youquanhelper.ui.home.util.GlideApp;
 import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
 
@@ -30,15 +29,23 @@ import java.util.Locale;
 public class GlideUtils {
 
     public static void loadHead(ImageView imageView, @Nullable Object model) {
-        RequestOptions mOptionsHead = new RequestOptions()
-                .centerCrop()
+//        RequestOptions mOptionsHead = new RequestOptions()
+//                .centerCrop()
+//                .placeholder(R.drawable.ic_default_head_24dp)
+//                .error(R.drawable.ic_default_head_24dp)
+//                .priority(Priority.HIGH)
+//                .diskCacheStrategy(DiskCacheStrategy.NONE);  //不缓存
+//        Glide.with(App.getInstance())
+//                .load(model)
+//                .apply(mOptionsHead)
+//                .into(imageView);
+        GlideApp.with(App.getInstance())
+                .load(model)
                 .placeholder(R.drawable.ic_default_head_24dp)
+                .centerCrop()
                 .error(R.drawable.ic_default_head_24dp)
                 .priority(Priority.HIGH)
-                .diskCacheStrategy(DiskCacheStrategy.NONE);  //不缓存
-        Glide.with(App.getInstance())
-                .load(model)
-                .apply(mOptionsHead)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)  //不缓存
                 .into(imageView);
     }
 
