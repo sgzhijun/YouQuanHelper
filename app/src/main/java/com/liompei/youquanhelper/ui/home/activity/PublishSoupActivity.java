@@ -13,14 +13,13 @@ import android.widget.Toast;
 
 import com.liompei.youquanhelper.R;
 import com.liompei.youquanhelper.base.BaseActivity;
-import com.liompei.youquanhelper.ui.home.util.MyGlideEngine;
+import com.liompei.youquanhelper.util.MyGlideEngine;
 import com.liompei.youquanhelper.util.MyPermissionUtil;
 import com.liompei.zxlog.Zx;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Liompei
@@ -34,7 +33,7 @@ public class PublishSoupActivity extends BaseActivity implements View.OnClickLis
     private TextView tv_publish;  //发表
     private TextView tv_choose_photo;  //选择图片
 
-    private List<String> mPaths;  //记录选择的图片
+    private ArrayList<Uri> mPaths;  //记录选择的图片
 
     public static void start(BaseActivity activity) {
         Intent intent = new Intent();
@@ -71,7 +70,7 @@ public class PublishSoupActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_publish:
-                shareToWeChat(et_input.getText().toString(), null);
+                shareToWeChat(et_input.getText().toString(), mPaths);
                 break;
             case R.id.tv_choose_photo:
                 choosePhoto();
@@ -130,7 +129,7 @@ public class PublishSoupActivity extends BaseActivity implements View.OnClickLis
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
-            mPaths.addAll(Matisse.obtainPathResult(data));
+            mPaths.addAll(Matisse.obtainResult(data));
             for (int i = 0; i < mPaths.size(); i++) {
                 Zx.d("第" + i + "张: " + mPaths.get(i));
             }

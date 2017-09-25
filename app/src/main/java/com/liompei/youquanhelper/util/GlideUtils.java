@@ -10,7 +10,6 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.liompei.youquanhelper.App;
 import com.liompei.youquanhelper.R;
-import com.liompei.youquanhelper.ui.home.util.GlideApp;
 import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
 
@@ -44,6 +43,17 @@ public class GlideUtils {
                 .placeholder(R.drawable.ic_default_head_24dp)
                 .centerCrop()
                 .error(R.drawable.ic_default_head_24dp)
+                .priority(Priority.HIGH)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)  //不缓存
+                .into(imageView);
+    }
+
+    public static void loadPicture(ImageView imageView, @Nullable Object model){
+        GlideApp.with(App.getInstance())
+                .load(model)
+//                .placeholder(R.drawable.ic_default_head_24dp)
+                .centerCrop()
+//                .error(R.drawable.ic_default_head_24dp)
                 .priority(Priority.HIGH)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)  //不缓存
                 .into(imageView);

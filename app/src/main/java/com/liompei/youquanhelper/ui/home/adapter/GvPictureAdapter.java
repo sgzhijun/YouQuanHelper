@@ -1,11 +1,17 @@
 package com.liompei.youquanhelper.ui.home.adapter;
 
 import android.content.Context;
+import android.net.Uri;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 
-import java.util.List;
+import com.liompei.youquanhelper.R;
+import com.liompei.youquanhelper.util.GlideUtils;
+
+import java.util.ArrayList;
 
 /**
  * Created by Liompei
@@ -17,10 +23,10 @@ import java.util.List;
 public class GvPictureAdapter extends BaseAdapter {
 
     private Context mContext;
-    private List<String> mPictureList;
+    private ArrayList<Uri> mPictureList;
 
 
-    public GvPictureAdapter(Context context, List<String> pictureList) {
+    public GvPictureAdapter(Context context, ArrayList<Uri> pictureList) {
         mContext = context;
         mPictureList = pictureList;
     }
@@ -31,7 +37,7 @@ public class GvPictureAdapter extends BaseAdapter {
     }
 
     @Override
-    public String getItem(int i) {
+    public Uri getItem(int i) {
         return mPictureList.get(i);
     }
 
@@ -42,12 +48,24 @@ public class GvPictureAdapter extends BaseAdapter {
 
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        return null;
+    public View getView(int position, View view, ViewGroup viewGroup) {
+        MyHolder myHolder = null;
+        if (view == null) {
+            myHolder = new MyHolder();
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_gv_picture_list, viewGroup, false);
+            myHolder.mIvPicture = view.findViewById(R.id.iv_picture);
+            view.setTag(myHolder);
+        } else {
+            myHolder = (MyHolder) view.getTag();
+        }
+        GlideUtils.loadPicture(myHolder.mIvPicture,mPictureList.get(position));
+        return view;
     }
 
-    class MyHolder{
 
+
+    class MyHolder {
+        ImageView mIvPicture;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.liompei.youquanhelper.ui.home.util;
+package com.liompei.youquanhelper.util;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
