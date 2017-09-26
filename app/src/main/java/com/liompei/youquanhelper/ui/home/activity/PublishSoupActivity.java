@@ -8,11 +8,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.liompei.youquanhelper.R;
 import com.liompei.youquanhelper.base.BaseActivity;
+import com.liompei.youquanhelper.ui.home.adapter.GvPictureAdapter;
 import com.liompei.youquanhelper.util.MyGlideEngine;
 import com.liompei.youquanhelper.util.MyPermissionUtil;
 import com.liompei.zxlog.Zx;
@@ -35,6 +37,10 @@ public class PublishSoupActivity extends BaseActivity implements View.OnClickLis
 
     private ArrayList<Uri> mPaths;  //记录选择的图片
 
+    private GridView mGvPicture;
+    private GvPictureAdapter mGvPictureAdapter;
+
+
     public static void start(BaseActivity activity) {
         Intent intent = new Intent();
         intent.setClass(activity, PublishSoupActivity.class);
@@ -52,11 +58,15 @@ public class PublishSoupActivity extends BaseActivity implements View.OnClickLis
         et_input = findView(R.id.et_input);
         tv_publish = findView(R.id.tv_publish);
         tv_choose_photo = findView(R.id.tv_choose_photo);
+        mGvPicture = findView(R.id.gv_picture);
+        mPaths = new ArrayList<>();
+        mGvPictureAdapter = new GvPictureAdapter(mBaseActivity, mPaths);
+        mGvPicture.setAdapter(mGvPictureAdapter);
     }
 
     @Override
     public void initData() {
-        mPaths = new ArrayList<>();
+
         tv_publish.setOnClickListener(this);
         tv_choose_photo.setOnClickListener(this);
     }
@@ -132,6 +142,7 @@ public class PublishSoupActivity extends BaseActivity implements View.OnClickLis
             mPaths.addAll(Matisse.obtainResult(data));
             for (int i = 0; i < mPaths.size(); i++) {
                 Zx.d("第" + i + "张: " + mPaths.get(i));
+
             }
         }
     }

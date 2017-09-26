@@ -63,6 +63,10 @@ public class GvPictureAdapter extends BaseAdapter {
     }
 
 
+    private void addData(){
+
+    }
+
 
     class MyHolder {
         ImageView mIvPicture;
