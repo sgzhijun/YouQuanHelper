@@ -35,8 +35,6 @@ public class PublishSoupActivity extends BaseActivity implements View.OnClickLis
     private TextView tv_publish;  //发表
     private TextView tv_choose_photo;  //选择图片
 
-    private ArrayList<Uri> mPaths;  //记录选择的图片
-
     private GridView mGvPicture;
     private GvPictureAdapter mGvPictureAdapter;
 
@@ -59,8 +57,7 @@ public class PublishSoupActivity extends BaseActivity implements View.OnClickLis
         tv_publish = findView(R.id.tv_publish);
         tv_choose_photo = findView(R.id.tv_choose_photo);
         mGvPicture = findView(R.id.gv_picture);
-        mPaths = new ArrayList<>();
-        mGvPictureAdapter = new GvPictureAdapter(mBaseActivity, mPaths);
+        mGvPictureAdapter = new GvPictureAdapter(mBaseActivity);
         mGvPicture.setAdapter(mGvPictureAdapter);
     }
 
@@ -79,11 +76,11 @@ public class PublishSoupActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tv_publish:
-                shareToWeChat(et_input.getText().toString(), mPaths);
-                break;
-            case R.id.tv_choose_photo:
+            case R.id.tv_choose_photo:  //选择图片
                 choosePhoto();
+                break;
+            case R.id.tv_publish:  //发表
+                shareToWeChat(et_input.getText().toString(), mGvPictureAdapter.getPictureList());
                 break;
         }
     }
@@ -121,7 +118,7 @@ public class PublishSoupActivity extends BaseActivity implements View.OnClickLis
 //                .thumbnailScale(0.85f)
 //                .imageEngine(new MyGlideEngine())
 //                .forResult(REQUEST_CODE_CHOOSE);
-        int hasPicture = 9 - mPaths.size();
+        int hasPicture = 9 - mGvPictureAdapter.getCount();
         if (hasPicture <= 0) {
             toast("最多选选择9张图片");
             return;
@@ -130,7 +127,7 @@ public class PublishSoupActivity extends BaseActivity implements View.OnClickLis
                 .choose(MimeType.ofImage())
                 .theme(R.style.Matisse_Dracula)
                 .countable(false)
-                .maxSelectable(9 - mPaths.size())
+                .maxSelectable(9 - mGvPictureAdapter.getCount())
                 .imageEngine(new MyGlideEngine())
                 .forResult(REQUEST_CODE_CHOOSE);
     }
@@ -139,11 +136,9 @@ public class PublishSoupActivity extends BaseActivity implements View.OnClickLis
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
-            mPaths.addAll(Matisse.obtainResult(data));
-            for (int i = 0; i < mPaths.size(); i++) {
-                Zx.d("第" + i + "张: " + mPaths.get(i));
-
-            }
+            Zx.d();
+            mGvPictureAdapter.addDataList(Matisse.obtainResult(data));
+            mGvPictureAdapter.setListViewHeightBasedOnChildren(mGvPicture);
         }
     }
 
