@@ -21,5 +21,9 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#d9d9d9</color>
 
+    <color name="publish_send">#FFB300</color>
+    <color name="publish_send_pressed">#F57F17</color>
+    <color name="publish_send_enabled_false">#FFE57F</color>
+
 
 </resources>

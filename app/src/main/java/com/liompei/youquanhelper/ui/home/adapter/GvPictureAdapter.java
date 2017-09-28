@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 
 import com.liompei.youquanhelper.R;
@@ -104,14 +105,17 @@ public class GvPictureAdapter extends BaseAdapter {
             //获取gridView的每一个item
             View listItem = listAdapter.getView(i, null, gridView);
             listItem.measure(0, 0);
+            listItem.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
             //获取item的高度和
             totalHeight += listItem.getMeasuredHeight();
-            Zx.d(totalHeight);
         }
-        if (listAdapter.getCount() < col) {
+        //
+        if (listAdapter.getCount() < 3) {
             for (int i = 0; i < listAdapter.getCount(); i++) {
                 View listItem = listAdapter.getView(i, null, gridView);
                 listItem.measure(0, 0);
+                Zx.d(listItem.getMeasuredWidth());
                 totalWidth += listItem.getMeasuredWidth();
             }
         } else {
@@ -121,7 +125,9 @@ public class GvPictureAdapter extends BaseAdapter {
         }
 
         //获取gridView的布局参数
-        ViewGroup.LayoutParams params = gridView.getLayoutParams();
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) gridView.getLayoutParams();
+        Zx.d("height: " + totalHeight);
+        Zx.d("width: " + totalWidth);
         //设置高度
         params.height = totalHeight;
         params.width = totalWidth;
