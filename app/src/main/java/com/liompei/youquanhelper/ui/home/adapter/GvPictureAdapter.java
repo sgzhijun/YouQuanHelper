@@ -80,7 +80,6 @@ public class GvPictureAdapter extends BaseAdapter {
         Zx.d("addDataList");
         mPictureList.addAll(uriList);
         notifyDataSetChanged();
-
     }
 
     public void deleteData(int position) {

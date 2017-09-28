@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -27,7 +28,7 @@ import java.util.ArrayList;
  * Created by Liompei
  * time : 2017/9/25 11:05
  * 1137694912@qq.com
- * remark:发表鸡汤
+ * remark:发表
  */
 public class PublishSoupActivity extends BaseActivity implements View.OnClickListener {
 
@@ -35,7 +36,7 @@ public class PublishSoupActivity extends BaseActivity implements View.OnClickLis
     private TextView tv_publish;  //发表
     private TextView tv_choose_photo;  //选择图片
 
-    private GridView mGvPicture;
+    private GridView mGvPictureView;
     private GvPictureAdapter mGvPictureAdapter;
 
 
@@ -52,13 +53,13 @@ public class PublishSoupActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-        getToolbar("发表鸡汤", true);
+        getToolbar("", true);
         et_input = findView(R.id.et_input);
         tv_publish = findView(R.id.tv_publish);
         tv_choose_photo = findView(R.id.tv_choose_photo);
-        mGvPicture = findView(R.id.gv_picture);
+        mGvPictureView = findView(R.id.gv_picture);
         mGvPictureAdapter = new GvPictureAdapter(mBaseActivity);
-        mGvPicture.setAdapter(mGvPictureAdapter);
+        mGvPictureView.setAdapter(mGvPictureAdapter);
     }
 
     @Override
@@ -71,6 +72,13 @@ public class PublishSoupActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onEvent() {
         MyPermissionUtil.requestPermission(mBaseActivity, null, new String(Manifest.permission.READ_EXTERNAL_STORAGE));
+        mGvPictureView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Zx.d(i);
+                Zx.d(l);
+            }
+        });
     }
 
     @Override
@@ -138,7 +146,7 @@ public class PublishSoupActivity extends BaseActivity implements View.OnClickLis
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
             Zx.d();
             mGvPictureAdapter.addDataList(Matisse.obtainResult(data));
-            mGvPictureAdapter.setListViewHeightBasedOnChildren(mGvPicture);
+            mGvPictureAdapter.setListViewHeightBasedOnChildren(mGvPictureView);
         }
     }
 
