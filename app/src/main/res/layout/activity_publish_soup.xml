@@ -24,7 +24,6 @@
             android:layout_gravity="center_vertical|right"
             android:layout_marginRight="8dp"
             android:background="@drawable/selector_publish_send"
-            android:enabled="false"
             android:paddingBottom="8dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
@@ -59,9 +58,9 @@
                     android:paddingBottom="30dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="20dp"
-                    android:textSize="@dimen/so_big_textSize"
                     android:paddingTop="8dp"
-                    android:text=""/>
+                    android:text=""
+                    android:textSize="@dimen/so_big_textSize"/>
 
                 <GridView
                     android:id="@+id/gv_picture"
@@ -77,6 +76,7 @@
                 android:id="@+id/tv_choose_photo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginRight="24dp"
                 android:layout_marginTop="20dp"
