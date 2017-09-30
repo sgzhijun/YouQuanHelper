@@ -1,8 +1,7 @@
 package com.liompei.youquanhelper.bean;
 
-import com.avos.avoscloud.AVClassName;
-import com.avos.avoscloud.AVFile;
-import com.avos.avoscloud.AVUser;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobFile;
 
 /**
  * Created by Liompei
@@ -11,44 +10,47 @@ import com.avos.avoscloud.AVUser;
  * remark:登录用户
  */
 
-@AVClassName("MyUser")
-public class MyUser extends AVUser {
+public class MyUser extends BmobUser {
 
     //个性签名
     //性别  男(true)  女(false)  默认为女
     //用户头像
     //地址
+    private String location;
+    private String whatsUp;
+    private Boolean sex;
+    private BmobFile profilePhoto;
+
 
     public String getLocation() {
-        return this.getString("location");
+        return location;
     }
 
     public void setLocation(String location) {
-        this.put("location", location);
+        this.location = location;
     }
 
     public String getWhatsUp() {
-        return this.getString("whatsUp");
+        return whatsUp;
     }
 
     public void setWhatsUp(String whatsUp) {
-        this.put("whatsUp", whatsUp);
+        this.whatsUp = whatsUp;
     }
 
     public Boolean getSex() {
-        return this.getBoolean("sex");
+        return sex;
     }
 
     public void setSex(Boolean sex) {
-        this.put("sex", sex);
+        this.sex = sex;
     }
 
-
-    public AVFile getProfilePhoto() {
-        return this.getAVFile("profilePhoto");
+    public BmobFile getProfilePhoto() {
+        return profilePhoto;
     }
 
-    public void setProfilePhoto(AVFile profilePhoto) {
-        this.put("profilePhoto", profilePhoto);
+    public void setProfilePhoto(BmobFile profilePhoto) {
+        this.profilePhoto = profilePhoto;
     }
 }

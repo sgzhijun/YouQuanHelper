@@ -7,15 +7,17 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVObject;
-import com.avos.avoscloud.AVQuery;
-import com.avos.avoscloud.GetCallback;
 import com.liompei.youquanhelper.R;
 import com.liompei.youquanhelper.base.BaseFragment;
-import com.liompei.youquanhelper.bean.MyUser;
+import com.liompei.youquanhelper.bean.CircleListBean;
 import com.liompei.youquanhelper.ui.home.activity.PublishSoupActivity;
 import com.liompei.zxlog.Zx;
+
+import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 
 /**
  * Created by Liompei
@@ -77,22 +79,22 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void netGetMainList() {
-        AVQuery<AVObject> avQuery = new AVQuery<>("CircleListBean");
-        avQuery.getInBackground(MyUser.getCurrentUser().getObjectId(), new GetCallback<AVObject>() {
+        BmobQuery<CircleListBean> bmobQuery=new BmobQuery<>();
+        bmobQuery.setLimit(6);  //查询6条数据
+        bmobQuery.findObjects(new FindListener<CircleListBean>() {
             @Override
-            public void done(AVObject avObject, AVException e) {
+            public void done(List<CircleListBean> list, BmobException e) {
                 mRefreshLayout.setRefreshing(false);
                 // object 就是 id 为 558e20cbe4b060308e3eb36c 的 对象实例
                 if (e == null) {
                     Zx.d("请求结束");
                     Zx.show("请求结束");
                 } else {
-                    Zx.d("请求失败" + e.getCode() + e.getMessage());
-                    Zx.show(e.getCode() + e.getMessage());
+                    Zx.d("请求失败" + e.getErrorCode() + e.getMessage());
+                    Zx.show("请求失败"+e.getErrorCode() + e.getMessage());
                 }
             }
         });
-
 
     }
 

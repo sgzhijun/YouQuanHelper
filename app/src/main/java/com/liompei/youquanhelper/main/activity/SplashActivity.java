@@ -1,8 +1,10 @@
 package com.liompei.youquanhelper.main.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Window;
 import android.view.WindowManager;
@@ -11,7 +13,10 @@ import com.liompei.youquanhelper.MainActivity;
 import com.liompei.youquanhelper.R;
 import com.liompei.youquanhelper.base.BaseActivity;
 import com.liompei.youquanhelper.bean.MyUser;
+import com.liompei.youquanhelper.util.MyPermissionUtil;
 import com.liompei.zxlog.Zx;
+
+import java.util.List;
 
 /**
  * Created by Liompei
@@ -47,20 +52,41 @@ public class SplashActivity extends BaseActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                MyUser myUser = MyUser.getCurrentUser(MyUser.class);
-                if (myUser != null) {
-                    // 允许用户使用应用
-                    Zx.v("已有用户登录");
-                    MainActivity.start(SplashActivity.this);
+                if (MyPermissionUtil.checkPermission(SplashActivity.this, Manifest.permission.READ_PHONE_STATE)) {
+                    toStart();
                 } else {
-                    //缓存用户对象为空时,可打开用户注册界面
-                    Zx.v("无用户");
-                    SignInActivity.start(SplashActivity.this);
+                    MyPermissionUtil.requestPermission(SplashActivity.this, mPermissionCallbacks, Manifest.permission.READ_PHONE_STATE);
                 }
-                finish();
             }
-        }, 1000);
+        }, 500);
+    }
 
+    private MyPermissionUtil.PermissionCallbacks mPermissionCallbacks = new MyPermissionUtil.PermissionCallbacks() {
+        @Override
+        public void onPermissionsGranted(List<String> list) {
+            toStart();
+        }
+
+        @Override
+        public void onPermissionsDenied(List<String> list) {
+            Zx.show("拒绝权限将导致软件功能不可用,请谨慎选择");
+            finish();
+        }
+    };
+
+
+    private void toStart() {
+        MyUser myUser = MyUser.getCurrentUser(MyUser.class);
+        if (myUser != null) {
+            // 允许用户使用应用
+            Zx.v("已有用户登录");
+            MainActivity.start(SplashActivity.this);
+        } else {
+            //缓存用户对象为空时,可打开用户注册界面
+            Zx.v("无用户");
+            SignInActivity.start(SplashActivity.this);
+        }
+        finish();
     }
 
     @Override
@@ -71,5 +97,11 @@ public class SplashActivity extends BaseActivity {
     @Override
     public void onEvent() {
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        MyPermissionUtil.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

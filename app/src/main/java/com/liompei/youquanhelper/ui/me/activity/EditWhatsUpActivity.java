@@ -8,13 +8,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.SaveCallback;
 import com.liompei.youquanhelper.R;
 import com.liompei.youquanhelper.base.BaseActivity;
 import com.liompei.youquanhelper.bean.MyUser;
 import com.liompei.youquanhelper.util.EditTextUtils;
 import com.liompei.zxlog.Zx;
+
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.UpdateListener;
 
 /**
  * Created by Liompei
@@ -70,7 +71,7 @@ public class EditWhatsUpActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_complete:  //完成
-                EditTextUtils.closeKeyboard(EditWhatsUpActivity.this,et_content);
+                EditTextUtils.closeKeyboard(EditWhatsUpActivity.this, et_content);
                 final String mEtContent = et_content.getText().toString().trim();
                 if (mEtContent.equals(MyUser.getCurrentUser(MyUser.class).getWhatsUp())) {
                     //签名没有改变的情况下不进行操作
@@ -98,14 +99,14 @@ public class EditWhatsUpActivity extends BaseActivity {
                     .setNegativeButton("不保存", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            EditTextUtils.closeKeyboard(EditWhatsUpActivity.this,et_content);
+                            EditTextUtils.closeKeyboard(EditWhatsUpActivity.this, et_content);
                             finish();
                         }
                     })
                     .setPositiveButton("保存", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            EditTextUtils.closeKeyboard(EditWhatsUpActivity.this,et_content);
+                            EditTextUtils.closeKeyboard(EditWhatsUpActivity.this, et_content);
                             //进行网络请求保存数据
                             netUpdateWhatsUp(mEtContent);
                         }
@@ -117,11 +118,11 @@ public class EditWhatsUpActivity extends BaseActivity {
 
     private void netUpdateWhatsUp(String whatsUp) {
         showProgress();
-        final MyUser myUser = MyUser.getCurrentUser(MyUser.class);
+        MyUser myUser = new MyUser();
         myUser.setWhatsUp(whatsUp);
-        myUser.saveInBackground(new SaveCallback() {
+        myUser.update(MyUser.getCurrentUser().getObjectId(), new UpdateListener() {
             @Override
-            public void done(AVException e) {
+            public void done(BmobException e) {
                 hideProgress();
                 if (e == null) {
                     Zx.show("修改成功");

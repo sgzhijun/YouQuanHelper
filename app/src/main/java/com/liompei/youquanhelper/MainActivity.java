@@ -115,7 +115,6 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 break;
             case 2:  //我的
                 mBottomNavigationView.setSelectedItemId(R.id.navigation_me);
-                mMeFragment.updateUserData();
                 break;
         }
     }

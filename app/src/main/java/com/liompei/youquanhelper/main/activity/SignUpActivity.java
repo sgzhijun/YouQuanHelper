@@ -7,8 +7,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.SignUpCallback;
 import com.liompei.youquanhelper.R;
 import com.liompei.youquanhelper.base.BaseActivity;
 import com.liompei.youquanhelper.bean.MyUser;
@@ -116,19 +114,19 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
         Zx.i(password);
         MyUser myUser = new MyUser();
         myUser.setMobilePhoneNumber(phoneNumber);
-        myUser.signUpInBackground(
-
-                new SignUpCallback() {
-                    @Override
-                    public void done(AVException e) {
-                        if (e == null) {
-                            Zx.show("注册成功");
-                            Zx.d(e);
-                        } else {
-                            Zx.show(e.getCode() + e.getMessage());
-                        }
-                    }
-                });
+//        myUser.signUpInBackground(
+//
+//                new SignUpCallback() {
+//                    @Override
+//                    public void done(AVException e) {
+//                        if (e == null) {
+//                            Zx.show("注册成功");
+//                            Zx.d(e);
+//                        } else {
+//                            Zx.show(e.getCode() + e.getMessage());
+//                        }
+//                    }
+//                });
 //        App.getInstance().finishAllActivity();
 //        MainActivity.start(this);
     }

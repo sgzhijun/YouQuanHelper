@@ -1,5 +1,7 @@
 package com.liompei.youquanhelper.util;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -96,6 +98,21 @@ public class ShareUtils {
             return false;
         } else {
             return true;
+        }
+    }
+
+    public static void shareToWeChat(Activity activity,String content, ArrayList<Uri> uris) {
+        try {
+            Intent intent = new Intent();
+            ComponentName comp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareToTimeLineUI");
+            intent.setComponent(comp);
+            intent.setAction(Intent.ACTION_SEND_MULTIPLE);
+            intent.setType("image/*");
+            intent.putExtra("Kdescription", content);
+            intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+            activity.startActivityForResult(intent, 10);
+        } catch (ActivityNotFoundException exception) {
+            Toast.makeText(activity.getApplicationContext(), "未检测到微信，请先安装微信！", Toast.LENGTH_SHORT).show();
         }
     }
 

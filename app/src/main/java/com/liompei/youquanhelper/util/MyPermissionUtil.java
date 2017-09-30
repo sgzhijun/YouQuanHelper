@@ -77,8 +77,10 @@ public class MyPermissionUtil {
                     for (int i = 0; i < grantResults.length; i++) {
                         if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {  //同意的权限
                             mGrantedList.add(permissions[i]);
+                            Zx.d(permissions[i]);
                         } else if (grantResults[i] == PackageManager.PERMISSION_DENIED) {  //取消的权限
                             mDeniedList.add(permissions[i]);
+                            Zx.d(permissions[i]);
                         }
                     }
 

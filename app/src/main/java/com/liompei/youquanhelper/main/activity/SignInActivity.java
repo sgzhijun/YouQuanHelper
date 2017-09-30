@@ -7,14 +7,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.LogInCallback;
 import com.liompei.youquanhelper.MainActivity;
 import com.liompei.youquanhelper.R;
 import com.liompei.youquanhelper.base.BaseActivity;
 import com.liompei.youquanhelper.bean.MyUser;
 import com.liompei.youquanhelper.util.EditTextUtils;
 import com.liompei.zxlog.Zx;
+
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.LogInListener;
 
 
 /**
@@ -130,20 +131,20 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     private void netLogin(String username, String password) {
         Zx.d("username->" + username);
         Zx.d("password->" + password);
-        MyUser.logInInBackground(username, password, new LogInCallback<MyUser>() {
+        MyUser.loginByAccount(username, password, new LogInListener<MyUser>() {
             @Override
-            public void done(MyUser myUser, AVException e) {
+            public void done(MyUser myUser, BmobException e) {
                 if (e == null) {
                     //登录成功
                     MainActivity.start(SignInActivity.this);
                     finish();
                 } else {
                     //登录失败
-                    Zx.i("用户名或密码不正确" + e.getCode() + e.getMessage());
+                    Zx.i("用户名或密码不正确" + e.getErrorCode() + e.getMessage());
                     Zx.show("用户名或密码不正确");
                 }
             }
-        }, MyUser.class);
+        });
 
     }
 }

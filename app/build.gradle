@@ -24,6 +24,11 @@ android {
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
     }
+
+    //***************bmob***********
+    //**兼容Android6.0系统所需，如果这句话报错，可在dependencies标签下使用compile 'cn.bmob.android:http-legacy:1.0'**
+    useLibrary 'org.apache.http.legacy'
+
     lintOptions {
         abortOnError false
     }
@@ -48,8 +53,10 @@ dependencies {
     compile 'com.github.vondear:RxTools:v1.7.3.9'
     compile 'com.github.yalantis:ucrop:2.2.1'
     compile 'com.google.code.gson:gson:2.8.1'
-    compile 'cn.leancloud.android:avoscloud-sdk:v4.4.4'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.1.1'
     compile 'com.zhihu.android:matisse:0.5.0-alpha4'
+    compile 'cn.bmob.android:bmob-sdk:3.5.7'
+    compile 'cn.bmob.android:bmob-sms:1.0.1'
+    compile 'cn.bmob.android:http-legacy:1.0'
 }

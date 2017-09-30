@@ -1,8 +1,6 @@
 package com.liompei.youquanhelper.ui.home.activity;
 
 import android.Manifest;
-import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,13 +9,13 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.liompei.youquanhelper.R;
 import com.liompei.youquanhelper.base.BaseActivity;
 import com.liompei.youquanhelper.ui.home.adapter.GvPictureAdapter;
 import com.liompei.youquanhelper.util.MyGlideEngine;
 import com.liompei.youquanhelper.util.MyPermissionUtil;
+import com.liompei.youquanhelper.util.ShareUtils;
 import com.liompei.zxlog.Zx;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -88,28 +86,23 @@ public class PublishSoupActivity extends BaseActivity implements View.OnClickLis
                 choosePhoto();
                 break;
             case R.id.tv_publish:  //发表
-                shareToWeChat(et_input.getText().toString(), mGvPictureAdapter.getPictureList());
+                String mEtInput = et_input.getText().toString().trim();
+                ArrayList<Uri> uriArrayList = mGvPictureAdapter.getPictureList();
+                netPublish(mEtInput);
+                ShareUtils.shareToWeChat(mBaseActivity, mEtInput, uriArrayList);
                 break;
         }
     }
 
-    private void shareToWeChat(String content, ArrayList<Uri> uris) {
-        try {
-            Intent intent = new Intent();
-            ComponentName comp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareToTimeLineUI");
-            intent.setComponent(comp);
-            intent.setAction(Intent.ACTION_SEND_MULTIPLE);
-            intent.setType("image/*");
-            intent.putExtra("Kdescription", content);
-            intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
-            mBaseActivity.startActivityForResult(intent, 10);
-        } catch (ActivityNotFoundException exception) {
-            Toast.makeText(mBaseActivity.getApplicationContext(), "未检测到微信，请先安装微信！", Toast.LENGTH_SHORT).show();
-        }
+
+    private void netPublish(String stringContent) {
+//        CircleListBean circleListBean = new CircleListBean();
+//        circleListBean.setStringContent(stringContent);
+//        circleListBean.setBmobFileList();
     }
 
-    private static final int REQUEST_CODE_CHOOSE = 23;
 
+    private static final int REQUEST_CODE_CHOOSE = 23;
 
     private void choosePhoto() {
 //        Matisse.from(PublishSoupActivity.this)

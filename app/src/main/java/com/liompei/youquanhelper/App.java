@@ -3,14 +3,13 @@ package com.liompei.youquanhelper;
 import android.app.Activity;
 import android.app.Application;
 
-import com.avos.avoscloud.AVOSCloud;
-import com.avos.avoscloud.AVUser;
-import com.liompei.youquanhelper.bean.MyUser;
 import com.liompei.zxlog.Zx;
 import com.vondear.rxtools.RxUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.bmob.v3.Bmob;
 
 /**
  * Created by Liompei
@@ -71,15 +70,9 @@ public class App extends Application {
     }
 
     private void initSDK() {
-        //为了防止 AVUser 子类在序列化与反序列化时丢失数据，需要在调用 AVOSCloud.initialize() 之前注册该子类
-        AVUser.registerSubclass(MyUser.class);
-        //当用户子类化 AVUser 后，如果希望以后查询 AVUser 所得到的对象会自动转化为用户子类化的对象，则需要在调用 AVOSCloud.initialize() 之前添加
-        AVUser.alwaysUseSubUserClass(MyUser.class);
-        // 初始化参数依次为 this, AppId, AppKey
-        AVOSCloud.initialize(this,"Lp1eeWjNeYeqi1Qgxr75Et8h-gzGzoHsz","nBsW0IsYITzXTuLe9YWzbkKS");
-        // 放在 SDK 初始化语句 AVOSCloud.initialize() 后面，只需要调用一次即可
-        //在应用发布之前，请关闭调试日志，以免暴露敏感数据。
-        AVOSCloud.setDebugLogEnabled(true);
+        //默认初始化
+        Bmob.initialize(this, "74a55af111e97a23e3970cd05a4d3da0", "BLM");
+
     }
 
 }
