@@ -10,8 +10,14 @@ import com.liompei.youquanhelper.R;
 import com.liompei.youquanhelper.base.BaseActivity;
 import com.liompei.youquanhelper.bean.MyUser;
 import com.liompei.youquanhelper.bean.MyWalletBean;
+import com.liompei.zxlog.Zx;
+
+import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.SaveListener;
 
 /**
  * Created by Liompei
@@ -22,6 +28,7 @@ import cn.bmob.v3.BmobQuery;
 public class MyWalletActivity extends BaseActivity {
 
     private TextView tv_balance;  //余额
+    private MyWalletBean mMyWalletBean;
 
     public static void start(BaseActivity activity) {
         Intent intent = new Intent();
@@ -47,7 +54,7 @@ public class MyWalletActivity extends BaseActivity {
 
     @Override
     public void onEvent() {
-
+        netBalance();
     }
 
     @Override
@@ -68,9 +75,57 @@ public class MyWalletActivity extends BaseActivity {
 
 
     private void netBalance() {
+        showProgress();
         BmobQuery<MyWalletBean> bmobQuery = new BmobQuery<>();
         //查询包含我的余额
         bmobQuery.addWhereEqualTo("author", MyUser.getCurrentUser(MyUser.class));
+        bmobQuery.findObjects(new FindListener<MyWalletBean>() {
+            @Override
+            public void done(List<MyWalletBean> list, BmobException e) {
+                if (e == null) {
+                    Zx.d(list.size());
+                    if (list.size() == 0) {
+                        //插入余额表
+                        Zx.d("需要创建表");
+                        netSaveBalanceTable();
+                    } else {
+                        dismissProgress();
+                        //有余额表,则显示
+                        mMyWalletBean = list.get(0);
+                        tv_balance.setText(mMyWalletBean.getBalance().toString());
+                    }
+                } else {
+                    dismissProgress();
+                    Zx.e(e.getErrorCode() + e.getMessage());
+                    Zx.show(e.getErrorCode() + e.getMessage());
+                    finish();
+                }
+            }
+        });
+    }
+
+    //没有表时创建一个表格
+    private void netSaveBalanceTable() {
+        final MyWalletBean myWalletBean = new MyWalletBean();
+        myWalletBean.setAuthor(MyUser.getCurrentUser(MyUser.class));
+        myWalletBean.setBalance(0);
+        myWalletBean.save(new SaveListener<String>() {
+            @Override
+            public void done(String s, BmobException e) {
+                dismissProgress();
+                if (e == null) {
+                    myWalletBean.setObjectId(s);
+                    mMyWalletBean = myWalletBean;
+                    tv_balance.setText(mMyWalletBean.getBalance().toString());
+                    Zx.d("添加表格成功" + s);
+                } else {
+                    Zx.e(e.getErrorCode() + e.getMessage());
+                    Zx.show(e.getErrorCode() + e.getMessage());
+                    finish();
+                }
+
+            }
+        });
     }
 
 }

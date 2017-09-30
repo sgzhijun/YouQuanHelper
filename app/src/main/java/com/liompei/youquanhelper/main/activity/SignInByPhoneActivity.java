@@ -163,7 +163,7 @@ public class SignInByPhoneActivity extends BaseActivity implements View.OnClickL
         MyUser.signOrLoginByMobilePhone(phoneNumber, smsCode, new LogInListener<MyUser>() {
             @Override
             public void done(MyUser myUser, BmobException e) {
-                hideProgress();
+                dismissProgress();
                 if (e == null) {
                     Zx.i("用户登陆成功");
                     App.getInstance().finishAllActivity();

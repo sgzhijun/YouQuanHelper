@@ -11,14 +11,14 @@ import cn.bmob.v3.BmobObject;
 
 public class MyWalletBean extends BmobObject {
 
-    private int balance;  //余额
+    private Integer balance;  //余额
     private MyUser author;  //余额所有者
 
-    public int getBalance() {
+    public Integer getBalance() {
         return balance;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(Integer balance) {
         this.balance = balance;
     }
 

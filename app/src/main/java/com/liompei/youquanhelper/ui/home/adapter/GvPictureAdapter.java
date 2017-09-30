@@ -83,6 +83,7 @@ public class GvPictureAdapter extends BaseAdapter {
     }
 
     public void deleteData(int position) {
+        Zx.d("当前长度:"+mPictureList.size());
         mPictureList.remove(position);
         notifyDataSetChanged();
     }
@@ -138,7 +139,7 @@ public class GvPictureAdapter extends BaseAdapter {
     }
 
 
-    class MyHolder {
+   protected class MyHolder {
         ImageView mIvPicture;
     }
 

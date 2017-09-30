@@ -1,8 +1,10 @@
 package com.liompei.youquanhelper.ui.home.activity;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -77,9 +79,19 @@ public class PublishSoupActivity extends BaseActivity implements View.OnClickLis
         MyPermissionUtil.requestPermission(mBaseActivity, null, new String(Manifest.permission.READ_EXTERNAL_STORAGE));
         mGvPictureView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Zx.d(i);
-                Zx.d(l);
+            public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
+                new AlertDialog.Builder(mBaseActivity)
+                        .setTitle("提醒")
+                        .setMessage("是否移除当前图片?")
+                        .setNegativeButton("取消", null)
+                        .setPositiveButton("移除", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Zx.d(position);
+                                mGvPictureAdapter.deleteData(position);
+                            }
+                        })
+                        .show();
             }
         });
     }

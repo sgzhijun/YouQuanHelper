@@ -123,7 +123,7 @@ public class EditWhatsUpActivity extends BaseActivity {
         myUser.update(MyUser.getCurrentUser().getObjectId(), new UpdateListener() {
             @Override
             public void done(BmobException e) {
-                hideProgress();
+                dismissProgress();
                 if (e == null) {
                     Zx.show("修改成功");
                     Zx.d("修改成功");

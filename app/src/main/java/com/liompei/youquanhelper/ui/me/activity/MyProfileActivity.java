@@ -212,7 +212,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
                     myUser.update(MyUser.getCurrentUser().getObjectId(), new UpdateListener() {
                         @Override
                         public void done(BmobException e) {
-                            hideProgress();
+                            dismissProgress();
                             if (e == null) {
                                 Zx.show("头像上传成功");
                                 Zx.d("头像上传成功");
@@ -226,7 +226,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
                         }
                     });
                 } else {
-                    hideProgress();
+                    dismissProgress();
                     Zx.show("头像上传失败" + e.getMessage());
                     Zx.e("头像上传失败" + e.getMessage());
                 }
@@ -248,7 +248,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
         myUser.update(MyUser.getCurrentUser().getObjectId(), new UpdateListener() {
             @Override
             public void done(BmobException e) {
-                hideProgress();
+                dismissProgress();
                 if (e == null) {
                     //设置性别
                     if (null != myUser.getSex() && myUser.getSex()) {
@@ -274,7 +274,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
         myUser.update(MyUser.getCurrentUser().getObjectId(), new UpdateListener() {
             @Override
             public void done(BmobException e) {
-                hideProgress();
+                dismissProgress();
                 if (e == null) {
                     needChanged = true;
                     tv_username.setText(myUser.getUsername());

@@ -67,10 +67,11 @@ public class ShareUtils {
 
         ArrayList<Uri> imageList = new ArrayList<Uri>();
         for (String picPath : paths) {
-            File f = new File(picPath);
-            if (f.exists()) {
-                imageList.add(Uri.fromFile(f));
-            }
+            imageList.add(Uri.parse(picPath));
+//            File f = new File(picPath);
+//            if (f.exists()) {
+//                imageList.add(Uri.fromFile(f));
+//            }
         }
         if(imageList.size() == 0){
             Toast.makeText(activity,"图片不存在",Toast.LENGTH_SHORT).show();

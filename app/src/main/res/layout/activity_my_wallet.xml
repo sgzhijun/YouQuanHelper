@@ -22,13 +22,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:background="@color/primary"
-                android:orientation="vertical"
-                android:paddingLeft="40dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/primary_margin_left"
+                    android:layout_gravity="center"
                     android:layout_marginTop="@dimen/primary_margin_top"
                     android:text="友币余额"
                     android:textColor="@color/window_background"/>
@@ -37,7 +36,7 @@
                     android:id="@+id/tv_balance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/primary_margin_left"
+                    android:layout_gravity="center"
                     android:layout_marginTop="40dp"
                     android:lines="1"
                     android:text="0"

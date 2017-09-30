@@ -112,12 +112,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         mProgressDialog.setOnCancelListener(listener);
     }
 
-    protected void hideProgress() {
-        if (mProgressDialog != null) {
-            mProgressDialog.hide();
-        }
-
-    }
 
     protected void dismissProgress() {
         if (mProgressDialog != null) {

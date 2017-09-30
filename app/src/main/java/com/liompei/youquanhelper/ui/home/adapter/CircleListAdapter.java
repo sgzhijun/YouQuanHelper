@@ -9,19 +9,17 @@ import com.liompei.youquanhelper.R;
 
 /**
  * Created by Liompei
- * Time 2017/9/7 23:13
+ * Time 2017/9/30 20:33
  * 1137694912@qq.com
- * remark:
+ * remark:发表的内容列表
  */
 
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyHolder> {
-
+public class CircleListAdapter extends RecyclerView.Adapter<CircleListAdapter.MyHolder> {
 
 
     @Override
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        MyHolder myHolder = new MyHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_fragment_list, parent, false));
-        return myHolder;
+        return new MyHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_circle_list, parent, false));
     }
 
     @Override
@@ -34,9 +32,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyHolder> {
         return 0;
     }
 
-     class MyHolder extends RecyclerView.ViewHolder {
+    class MyHolder extends RecyclerView.ViewHolder {
         public MyHolder(View itemView) {
             super(itemView);
         }
     }
+
 }
