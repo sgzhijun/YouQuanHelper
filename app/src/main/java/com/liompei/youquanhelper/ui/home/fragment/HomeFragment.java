@@ -87,8 +87,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 mRefreshLayout.setRefreshing(false);
                 // object 就是 id 为 558e20cbe4b060308e3eb36c 的 对象实例
                 if (e == null) {
-                    Zx.d("请求结束");
-                    Zx.show("请求结束");
+                    Zx.d("请求结束"+list.size());
                 } else {
                     Zx.d("请求失败" + e.getErrorCode() + e.getMessage());
                     Zx.show("请求失败"+e.getErrorCode() + e.getMessage());

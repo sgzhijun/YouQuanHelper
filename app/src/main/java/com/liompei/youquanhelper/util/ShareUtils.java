@@ -52,13 +52,13 @@ public class ShareUtils {
     /**
      * 分享9图到朋友圈
      *
-     * @param context
+     * @param activity
      * @param Kdescription 9图上边输入框中的文案
      * @param paths        本地图片的路径
      */
-    public static void share9PicsToWXCircle(Context context, String Kdescription, List<String> paths) {
-        if (!isInstallWeChart(context)) {
-            Toast.makeText(context,"您没有安装微信",Toast.LENGTH_SHORT).show();
+    public static void share9PicsToWXCircle(Activity activity, String Kdescription, List<String> paths) {
+        if (!isInstallWeChart(activity)) {
+            Toast.makeText(activity,"您没有安装微信",Toast.LENGTH_SHORT).show();
             return;
         }
         Intent intent = new Intent();
@@ -73,13 +73,15 @@ public class ShareUtils {
             }
         }
         if(imageList.size() == 0){
-            Toast.makeText(context,"图片不存在",Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity,"图片不存在",Toast.LENGTH_SHORT).show();
             return;
         }
         intent.setType("image/*");
-        intent.putExtra(Intent.EXTRA_STREAM, imageList); //图片数据（支持本地图片的Uri形式）
         intent.putExtra("Kdescription", Kdescription); //微信分享页面，图片上边的描述
-        context.startActivity(intent);
+        intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageList);
+        activity.startActivityForResult(intent, 10);
+//        intent.putExtra(Intent.EXTRA_STREAM, imageList); //图片数据（支持本地图片的Uri形式）
+//        context.startActivity(intent);
     }
 
     /**不实用微信sdk检查是否安装微信

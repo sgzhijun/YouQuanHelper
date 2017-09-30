@@ -1,7 +1,6 @@
 package com.liompei.youquanhelper.ui.home.adapter;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +27,7 @@ import java.util.List;
 public class GvPictureAdapter extends BaseAdapter {
 
     private Context mContext;
-    private ArrayList<Uri> mPictureList;
+    private List<String> mPictureList;
 
 
     public GvPictureAdapter(Context context) {
@@ -42,7 +41,7 @@ public class GvPictureAdapter extends BaseAdapter {
     }
 
     @Override
-    public Uri getItem(int i) {
+    public String getItem(int i) {
         return mPictureList.get(i);
     }
 
@@ -68,18 +67,18 @@ public class GvPictureAdapter extends BaseAdapter {
     }
 
 
-    public ArrayList<Uri> getPictureList() {
+    public List<String> getPictureList() {
         return mPictureList;
     }
 
-    public void addData(Uri uri) {
-        mPictureList.add(uri);
+    public void addData(String path) {
+        mPictureList.add(path);
         notifyDataSetChanged();
     }
 
-    public void addDataList(List<Uri> uriList) {
+    public void addDataList(List<String> pathList) {
         Zx.d("addDataList");
-        mPictureList.addAll(uriList);
+        mPictureList.addAll(pathList);
         notifyDataSetChanged();
     }
 

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobConfig;
 
 /**
  * Created by Liompei
@@ -71,7 +72,14 @@ public class App extends Application {
 
     private void initSDK() {
         //默认初始化
-        Bmob.initialize(this, "74a55af111e97a23e3970cd05a4d3da0", "BLM");
+        BmobConfig config = new BmobConfig.Builder(this)
+                .setApplicationId("74a55af111e97a23e3970cd05a4d3da0")
+                //设置超时时间
+                .setConnectTimeout(30)
+                //文件分片上传时每片的大小（单位字节），默认512*1024
+                .setUploadBlockSize(500 * 1024)
+                .build();
+        Bmob.initialize(config);
 
     }
 

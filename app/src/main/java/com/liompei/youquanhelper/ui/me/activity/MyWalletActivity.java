@@ -4,9 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.liompei.youquanhelper.R;
 import com.liompei.youquanhelper.base.BaseActivity;
+import com.liompei.youquanhelper.bean.MyUser;
+import com.liompei.youquanhelper.bean.MyWalletBean;
+
+import cn.bmob.v3.BmobQuery;
 
 /**
  * Created by Liompei
@@ -16,6 +21,13 @@ import com.liompei.youquanhelper.base.BaseActivity;
  */
 public class MyWalletActivity extends BaseActivity {
 
+    private TextView tv_balance;  //余额
+
+    public static void start(BaseActivity activity) {
+        Intent intent = new Intent();
+        intent.setClass(activity, MyWalletActivity.class);
+        activity.startActivity(intent);
+    }
 
     @Override
     public int getLayoutId() {
@@ -25,6 +37,7 @@ public class MyWalletActivity extends BaseActivity {
     @Override
     public void initViews(Bundle savedInstanceState) {
         getToolbar("钱包", true);
+        tv_balance = findView(R.id.tv_balance);
     }
 
     @Override
@@ -53,10 +66,11 @@ public class MyWalletActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static void start(BaseActivity activity) {
-        Intent intent = new Intent();
-        intent.setClass(activity, MyWalletActivity.class);
-        activity.startActivity(intent);
+
+    private void netBalance() {
+        BmobQuery<MyWalletBean> bmobQuery = new BmobQuery<>();
+        //查询包含我的余额
+        bmobQuery.addWhereEqualTo("author", MyUser.getCurrentUser(MyUser.class));
     }
 
 }

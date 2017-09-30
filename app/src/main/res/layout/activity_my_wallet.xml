@@ -22,55 +22,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:background="@color/primary"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:paddingLeft="40dp">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/primary_margin_left"
+                    android:layout_marginTop="@dimen/primary_margin_top"
+                    android:text="友币余额"
+                    android:textColor="@color/window_background"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/primary_margin_left"
-                        android:layout_marginTop="@dimen/primary_margin_top"
-                        android:text="友币余额"
-                        android:textColor="@color/window_background"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/primary_margin_left"
-                        android:layout_marginTop="40dp"
-                        android:text="0.0"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/big_big_textSize"/>
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tv_balance"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/primary_margin_left"
-                        android:layout_marginTop="@dimen/primary_margin_top"
-                        android:text="圈币余额"
-                        android:textColor="@color/window_background"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/primary_margin_left"
-                        android:layout_marginTop="40dp"
-                        android:text="0.0"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/big_big_textSize"/>
-                </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/primary_margin_left"
+                    android:layout_marginTop="40dp"
+                    android:lines="1"
+                    android:text="0"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/big_big_textSize"/>
 
             </LinearLayout>
 
