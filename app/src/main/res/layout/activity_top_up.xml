@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.me.activity.TopUpActivity">
+
+    <include layout="@layout/common_toolbar"/>
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small">
+
+        <RadioButton
+            android:id="@+id/rb_weChat"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:background="@drawable/selector_item_touch"
+            android:button="@null"
+            android:checked="true"
+            android:drawableLeft="@drawable/ic_pay_we_chat_24dp"
+            android:drawablePadding="20dp"
+            android:drawableRight="@drawable/btn_radio"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/primary_padding_left"
+            android:paddingRight="20dp"
+            android:text="微信支付"
+            android:textSize="@dimen/so_big_textSize"/>
+
+        <include layout="@layout/common_divider"/>
+
+        <RadioButton
+            android:id="@+id/rb_aliPay"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:background="@drawable/selector_item_touch"
+            android:button="@null"
+            android:drawableLeft="@drawable/ic_pay_alipay_24dp"
+            android:drawablePadding="20dp"
+            android:drawableRight="@drawable/btn_radio"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/primary_padding_left"
+            android:paddingRight="20dp"
+            android:text="支付宝支付"
+            android:textSize="@dimen/so_big_textSize"/>
+
+    </RadioGroup>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/primary_margin_top"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingBottom="12dp"
+        android:paddingLeft="@dimen/primary_padding_left"
+        android:paddingTop="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="金额"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:digits="0123456789"
+            android:hint="请输入充值金额"
+            android:inputType="number"
+            android:maxLength="9"
+            android:maxLines="1"
+            android:paddingLeft="8dp"
+            android:textCursorDrawable="@drawable/shape_color_cursor"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_recharge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginRight="@dimen/margin_small"
+        android:layout_marginTop="@dimen/primary_margin_top"
+        android:background="@drawable/selector_button_touch_oval"
+        android:gravity="center"
+        android:paddingBottom="12dp"
+        android:paddingTop="12dp"
+        android:text="下一步"
+        android:textColor="@color/white"
+        android:textSize="@dimen/so_big_textSize"/>
+
+
+</LinearLayout>

@@ -53,10 +53,10 @@ dependencies {
     compile 'com.github.vondear:RxTools:v1.7.3.9'
     compile 'com.github.yalantis:ucrop:2.2.1'
     compile 'com.google.code.gson:gson:2.8.1'
-    testCompile 'junit:junit:4.12'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.1.1'
     compile 'com.zhihu.android:matisse:0.5.0-alpha4'
     compile 'cn.bmob.android:bmob-sdk:3.5.7'
     compile 'cn.bmob.android:bmob-sms:1.0.1'
     compile 'cn.bmob.android:http-legacy:1.0'
+    testCompile 'junit:junit:4.12'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.1.1'
 }

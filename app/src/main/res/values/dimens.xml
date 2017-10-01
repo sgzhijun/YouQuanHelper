@@ -29,6 +29,8 @@
     <dimen name="primary_padding_bottom">24dp</dimen>
     <dimen name="primary_margin_bottom">24dp</dimen>
 
+    <dimen name="margin_small">15dp</dimen>
+
     <!--知乎图片选择器-->
     <dimen name="grid_expected_size">120dp</dimen>
 </resources>

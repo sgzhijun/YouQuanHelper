@@ -47,6 +47,7 @@
 
 
             <TextView
+                android:id="@+id/tv_topUp"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/primary_item_size"
                 android:layout_marginTop="@dimen/primary_margin_top"
@@ -62,6 +63,7 @@
             <include layout="@layout/common_divider"/>
 
             <TextView
+                android:id="@+id/tv_withdraw"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/primary_item_size"
                 android:background="@drawable/selector_item_touch"
@@ -71,7 +73,8 @@
                 android:gravity="center_vertical"
                 android:paddingLeft="@dimen/primary_padding_left"
                 android:paddingRight="10dp"
-                android:text="提现"/>
+                android:text="提现"
+                android:visibility="gone"/>
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

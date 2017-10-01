@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.liompei.youquanhelper.R;
@@ -25,9 +26,11 @@ import cn.bmob.v3.listener.SaveListener;
  * 1137694912@qq.com
  * remark:钱包
  */
-public class MyWalletActivity extends BaseActivity {
+public class MyWalletActivity extends BaseActivity implements View.OnClickListener {
 
     private TextView tv_balance;  //余额
+    private TextView tv_topUp;  //充值
+    private TextView tv_withdraw;  //提现
     private MyWalletBean mMyWalletBean;
 
     public static void start(BaseActivity activity) {
@@ -45,11 +48,14 @@ public class MyWalletActivity extends BaseActivity {
     public void initViews(Bundle savedInstanceState) {
         getToolbar("钱包", true);
         tv_balance = findView(R.id.tv_balance);
+        tv_topUp = findView(R.id.tv_topUp);
+        tv_withdraw = findView(R.id.tv_withdraw);
     }
 
     @Override
     public void initData() {
-
+        tv_topUp.setOnClickListener(this);
+        tv_withdraw.setOnClickListener(this);
     }
 
     @Override
@@ -73,6 +79,17 @@ public class MyWalletActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_topUp:  //充值
+                TopUpActivity.start(mBaseActivity, mMyWalletBean);
+                break;
+            case R.id.tv_withdraw:  //提现
+
+                break;
+        }
+    }
 
     private void netBalance() {
         showProgress();
