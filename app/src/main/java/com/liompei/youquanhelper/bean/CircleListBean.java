@@ -1,10 +1,10 @@
 package com.liompei.youquanhelper.bean;
 
-import java.util.List;
+import com.avos.avoscloud.AVClassName;
+import com.avos.avoscloud.AVFile;
+import com.avos.avoscloud.AVObject;
 
-import cn.bmob.v3.BmobObject;
-import cn.bmob.v3.datatype.BmobFile;
-import cn.bmob.v3.datatype.BmobRelation;
+import java.util.List;
 
 /**
  * Created by Liompei
@@ -12,43 +12,34 @@ import cn.bmob.v3.datatype.BmobRelation;
  * 1137694912@qq.com
  * remark:
  */
-
-public class CircleListBean extends BmobObject {
+@AVClassName("CircleList")
+public class CircleListBean extends AVObject {
 
     private String stringContent;  //文字内容
-    private List<BmobFile> mBmobFileList;  //图片内容
+    private List<AVFile> mAVFileList;  //图片内容
     private MyUser author;  //作者  一对一
-    private BmobRelation likes;  //多对多关系,用于储存转发的用户
-
-    public BmobRelation getLikes() {
-        return likes;
-    }
-
-    public void setLikes(BmobRelation likes) {
-        this.likes = likes;
-    }
 
     public MyUser getAuthor() {
-        return author;
+        return getAVUser("author", MyUser.class);
     }
 
     public void setAuthor(MyUser author) {
-        this.author = author;
+        put("author", author);
     }
 
     public String getStringContent() {
-        return stringContent;
+        return getString("stringContent");
     }
 
     public void setStringContent(String stringContent) {
-        this.stringContent = stringContent;
+        put("stringContent", stringContent);
     }
 
-    public List<BmobFile> getBmobFileList() {
-        return mBmobFileList;
+    public List<AVFile> getAVFileList() {
+        return getAVFile("mAVFileList");
     }
 
-    public void setBmobFileList(List<BmobFile> bmobFileList) {
-        mBmobFileList = bmobFileList;
+    public void setAVFileList(List<AVFile> AVFileList) {
+        put("mAVFileList", AVFileList);
     }
 }

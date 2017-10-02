@@ -16,6 +16,11 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="TemplateDetailsTheme" parent="AppTheme">
+        <item name="colorPrimary">@color/weChatPrimary</item>
+        <item name="colorPrimaryDark">@color/weChatPrimaryDark</item>
+    </style>
+
     <!--toolbar菜单-->
     <style name="ToolbarMenu" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <!-- 设置Menu菜单的背景色 -->

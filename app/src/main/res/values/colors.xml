@@ -3,6 +3,9 @@
     <!--<color name="colorPrimary">#3F51B5</color>-->
     <!--<color name="colorPrimaryDark">#303F9F</color>-->
     <!--<color name="colorAccent">#FF4081</color>-->
+    <color name="weChatPrimary">#393a3f</color>
+    <color name="weChatPrimaryDark">#303135</color>
+
     <color name="navigation_color">#fafafa</color>
 
     <color name="white">#FFFFFF</color>

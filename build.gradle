@@ -20,8 +20,10 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        //Bmob的maven仓库地址--必填
-        maven { url "https://raw.github.com/bmob/bmob-android-sdk/master" }
+        //这里是 LeanCloud 的包仓库
+        maven {
+            url "http://mvn.leancloud.cn/nexus/content/repositories/public"
+        }
         maven { url 'https://maven.google.com' }
         maven { url "https://jitpack.io" }
     }

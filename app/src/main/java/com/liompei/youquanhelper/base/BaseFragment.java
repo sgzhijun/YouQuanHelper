@@ -91,4 +91,9 @@ public abstract class BaseFragment extends Fragment {
         super.startActivity(intent);
         getBaseActivity().overridePendingTransition(R.anim.anim_in_right, R.anim.anim_out_left);
     }
+
+    protected void toast(final String s) {
+        getBaseActivity().toast(s);
+    }
+
 }

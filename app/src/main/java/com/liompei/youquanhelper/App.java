@@ -1,16 +1,16 @@
 package com.liompei.youquanhelper;
 
 import android.app.Activity;
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 
+import com.avos.avoscloud.AVOSCloud;
+import com.avos.avoscloud.AVObject;
+import com.liompei.youquanhelper.bean.CircleListBean;
 import com.liompei.zxlog.Zx;
 import com.vondear.rxtools.RxUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import cn.bmob.v3.Bmob;
-import cn.bmob.v3.BmobConfig;
 
 /**
  * Created by Liompei
@@ -19,11 +19,10 @@ import cn.bmob.v3.BmobConfig;
  * remark:
  */
 
-public class App extends Application {
+public class App extends MultiDexApplication {
 
     //***全局***
     public static App instance;
-
     public static App getInstance() {
         return instance;
     }
@@ -71,16 +70,11 @@ public class App extends Application {
     }
 
     private void initSDK() {
-        //默认初始化
-        BmobConfig config = new BmobConfig.Builder(this)
-                .setApplicationId("74a55af111e97a23e3970cd05a4d3da0")
-                //设置超时时间
-                .setConnectTimeout(30)
-                //文件分片上传时每片的大小（单位字节），默认512*1024
-                .setUploadBlockSize(500 * 1024)
-                .build();
-        Bmob.initialize(config);
-
+        AVObject.registerSubclass(CircleListBean.class);
+        // 初始化参数依次为 this, AppId, AppKey
+        AVOSCloud.initialize(this,"7NHNh8r3qmYShXBCqYriQjHF-gzGzoHsz","z499nWcuMIQdcRM2Lw8TeJNr");
+        // 放在 SDK 初始化语句 AVOSCloud.initialize() 后面，只需要调用一次即可
+        AVOSCloud.setDebugLogEnabled(true);
     }
 
 }

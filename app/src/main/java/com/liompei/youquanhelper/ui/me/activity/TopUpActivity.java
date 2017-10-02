@@ -2,8 +2,8 @@ package com.liompei.youquanhelper.ui.me.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -21,6 +21,7 @@ public class TopUpActivity extends BaseActivity implements View.OnClickListener 
 
     private RadioGroup radio_group;
     private TextView tv_recharge;  //充值
+    private EditText et_money;  //充值金额
 
     public static void start(BaseActivity activity, MyWalletBean myWalletBean) {
         Intent intent = new Intent();
@@ -39,16 +40,12 @@ public class TopUpActivity extends BaseActivity implements View.OnClickListener 
         getToolbar("账户充值", true);
         radio_group = findView(R.id.radio_group);
         tv_recharge = findView(R.id.tv_recharge);
+        et_money = findView(R.id.et_money);
     }
 
     @Override
     public void initData() {
         tv_recharge.setOnClickListener(this);
-        radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
-            }
-        });
     }
 
     @Override
@@ -60,14 +57,24 @@ public class TopUpActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_recharge:
+                String money = et_money.getText().toString();
+                if (null == money || "".equals(money)) {
+                    toast("请输入有效金额");
+                    return;
+                }
                 if (radio_group.getCheckedRadioButtonId() == R.id.rb_weChat) {
                     //微信
                     toast("微信支付");
+                    weChatPay();
                 } else if (radio_group.getCheckedRadioButtonId() == R.id.rb_aliPay) {
                     //支付宝
                     toast("支付宝支付");
                 }
                 break;
         }
+    }
+
+    //微信支付
+    private void weChatPay() {
     }
 }
