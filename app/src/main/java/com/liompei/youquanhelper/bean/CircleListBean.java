@@ -17,7 +17,7 @@ public class CircleListBean extends AVObject {
 
     private String stringContent;  //文字内容
     private List<AVFile> files;  //图片内容
-    private MyUser author;  //作者  一对一
+    private MyUser author;  //作者
 
     public MyUser getAuthor() {
         return getAVUser("author", MyUser.class);
@@ -35,11 +35,11 @@ public class CircleListBean extends AVObject {
         put("stringContent", stringContent);
     }
 
-    public List<AVFile> getAVFileList() {
+    public List<AVFile> getFiles() {
         return getList("files");
     }
 
-    public void setAVFileList(List<AVFile> AVFileList) {
+    public void setFiles(List<AVFile> AVFileList) {
         put("files", AVFileList);
     }
 }

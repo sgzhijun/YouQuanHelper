@@ -56,7 +56,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         mHomeAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                TemplateDetailsActivity.start(getBaseActivity(),mHomeAdapter.getItemData(position));
+                TemplateDetailsActivity.start(getBaseActivity(), mHomeAdapter.getItemData(position));
             }
         });
     }
@@ -95,10 +95,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void netGetMainList() {
-        AVQuery<CircleListBean> avQuery=AVQuery.getQuery(CircleListBean.class);
+        AVQuery<CircleListBean> avQuery = AVQuery.getQuery(CircleListBean.class);
         avQuery.setLimit(15);
-        avQuery.setSkip(count*15);
-        avQuery.findInBackground(new FindCallback<CircleListBean>() {
+        avQuery.setSkip(count * 15);
+        avQuery.findInBackground(new FindCallback<CircleListBean>()
+
+        {
             @Override
             public void done(List<CircleListBean> list, AVException e) {
                 if (e == null) {
@@ -124,7 +126,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                         mXRrecycler.setNoMore(true);
                     }
                 } else {
-                    Zx.d("请求失败" +  e.getMessage());
+                    Zx.d("请求失败" + e.getMessage());
                     Zx.show("请求失败" + e.getMessage());
                     Zx.e("BmobException: " + count);
                     if (count == 0) {

@@ -72,7 +72,7 @@ public class TemplateDetailsActivity extends BaseActivity {
     private void setSpanCount() {
         Zx.d(((MyUser)mCircleListBean.getAVObject("author")).getObjectId());
         Zx.d(((List<AVFile>)mCircleListBean.getList("files")).get(0).getObjectId());
-        int size = mCircleListBean.getAVFileList().size();
+        int size = mCircleListBean.getFiles().size();
         if (size == 0) {
             toast("没有图片的模板");
         } else if (size == 1) {
