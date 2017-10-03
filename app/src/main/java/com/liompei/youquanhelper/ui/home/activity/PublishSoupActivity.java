@@ -11,6 +11,10 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVFile;
+import com.avos.avoscloud.ProgressCallback;
+import com.avos.avoscloud.SaveCallback;
 import com.liompei.youquanhelper.R;
 import com.liompei.youquanhelper.base.BaseActivity;
 import com.liompei.youquanhelper.bean.CircleListBean;
@@ -22,12 +26,10 @@ import com.liompei.zxlog.Zx;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
-
-import cn.bmob.v3.datatype.BmobFile;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.SaveListener;
-import cn.bmob.v3.listener.UploadBatchListener;
 
 /**
  * Created by Liompei
@@ -105,6 +107,7 @@ public class PublishSoupActivity extends BaseActivity implements View.OnClickLis
             case R.id.tv_publish:  //发表
                 String mEtInput = et_input.getText().toString().trim();
                 List<String> uriArrayList = mGvPictureAdapter.getPictureList();
+
                 if (uriArrayList.size() == 0) {
                     toast("请选择图片");
                     return;
@@ -115,65 +118,80 @@ public class PublishSoupActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
+
+    private void upload(final String stringContent, final List<String> pathList) {
+        try {
+            File file = new File(pathList.get(count));
+            final AVFile avFile = AVFile.withFile(file.getName(), file);
+            Zx.d(file.getName());
+            avFile.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(AVException e) {
+                    // 成功或失败处理...
+                    if (e == null) {
+                        Zx.d("上传成功" + count + "   " + avFile.getUrl());
+                        avFiles.add(avFile);
+                        if (count + 1 < pathList.size()) {
+                            Zx.d("需要继续上传");
+                            count++;
+                            upload(stringContent, pathList);
+                        } else {
+                            //发表
+                            Zx.d("全部上传完毕,发表" + avFiles.size());
+                            netPublish(stringContent, avFiles);
+                        }
+                    } else {
+                        dismissProgress();
+                        Zx.e("错误码" + e.getCode() + ",错误描述" + e.getMessage());
+                        Zx.show("错误码" + e.getCode() + ",错误描述" + e.getMessage());
+                        Zx.d("上传失败");
+                    }
+                }
+
+            }, new ProgressCallback() {
+                @Override
+                public void done(Integer integer) {
+                    Zx.d("第" + count + "个,进度 " + integer.toString());
+                }
+            });
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     //1.上传文件
+    int count = 0;
+    ArrayList<AVFile> avFiles;
+
     private void uploadBatch(final String stringContent, final List<String> pathList) {
         showProgress();
-        BmobFile.uploadBatch(pathList.toArray(new String[pathList.size()]), new UploadBatchListener() {
-            @Override
-            //1、files-上传完成后的BmobFile集合，是为了方便大家对其上传后的数据进行操作，例如你可以将该文件保存到表中
-            //2、urls-上传文件的完整url地址
-            public void onSuccess(List<BmobFile> files, List<String> urls) {
-                //有多少个文件上传，onSuccess方法就会执行多少次
-                //通过onSuccess回调方法中的files或urls集合的大小与上传的总文件个数比较，如果一样，则表示全部文件上传成功
-                if (urls.size() == pathList.size()) {
-                    //全部上传完成
-                    Zx.d("全部上传完成");
-                    //发表
-                    netPublish(stringContent, files);
-                }
-            }
-
-            @Override
-            //1、curIndex--表示当前第几个文件正在上传
-            //2、curPercent--表示当前上传文件的进度值（百分比）
-            //3、total--表示总的上传文件数
-            //4、totalPercent--表示总的上传进度（百分比）
-            public void onProgress(int curIndex, int curPercent, int total, int totalPercent) {
-                Zx.d("第 " + curIndex + " 个文件正在上传");
-                Zx.d("当前文件上传进度 " + curPercent);
-                Zx.d("总上传文件数: " + total);
-                Zx.d("总上传进度: " + totalPercent);
-                Zx.e("#############");
-            }
-
-            @Override
-            public void onError(int statuscode, String errormsg) {
-                dismissProgress();
-                Zx.e("错误码" + statuscode + ",错误描述" + errormsg);
-                Zx.show("错误码" + statuscode + ",错误描述" + errormsg);
-
-            }
-        });
+        Zx.d("循环上传文件直至所有文件上传成功");
+        count = 0;
+        avFiles = new ArrayList<>();
+        avFiles.clear();
+        upload(stringContent, pathList);
     }
 
 
     //2.发表内容
-    private void netPublish(String stringContent, List<BmobFile> bmobFiles) {
+    private void netPublish(String stringContent, List<AVFile> avFiles) {
         CircleListBean circleListBean = new CircleListBean();
         circleListBean.setStringContent(stringContent);
-        circleListBean.setBmobFileList(bmobFiles);
+        circleListBean.setAuthor(MyUser.getMyUser());
+        circleListBean.addAll("files",avFiles);
+//        circleListBean.setAVFileList(avFiles);
         //添加一对一关联
-        circleListBean.setAuthor(MyUser.getCurrentUser(MyUser.class));
-        circleListBean.save(new SaveListener<String>() {
+        circleListBean.saveInBackground(new SaveCallback() {
             @Override
-            public void done(String s, BmobException e) {
+            public void done(AVException e) {
                 dismissProgress();
                 if (e == null) {
                     toast("发表成功");
-                    Zx.d(s);
+                    Zx.d("发表成功");
                 } else {
-                    Zx.d(e.getErrorCode() + e.getMessage());
-                    Zx.show(e.getErrorCode() + e.getMessage());
+                    Zx.d(e.getMessage());
+                    Zx.show(e.getMessage());
                 }
             }
         });

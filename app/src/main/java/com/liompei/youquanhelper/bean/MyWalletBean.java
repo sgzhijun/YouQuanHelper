@@ -1,6 +1,7 @@
 package com.liompei.youquanhelper.bean;
 
-import cn.bmob.v3.BmobObject;
+import com.avos.avoscloud.AVClassName;
+import com.avos.avoscloud.AVObject;
 
 /**
  * Created by Liompei
@@ -8,25 +9,25 @@ import cn.bmob.v3.BmobObject;
  * 1137694912@qq.com
  * remark:钱包
  */
+@AVClassName("MyWallet")
+public class MyWalletBean extends AVObject {
 
-public class MyWalletBean extends BmobObject {
-
-    private Integer balance;  //余额
+    private int balance;  //余额
     private MyUser author;  //余额所有者
 
-    public Integer getBalance() {
-        return balance;
+    public int getBalance() {
+        return getInt("balance");
     }
 
-    public void setBalance(Integer balance) {
-        this.balance = balance;
+    public void setBalance(int balance) {
+        put("balance", balance);
     }
 
     public MyUser getAuthor() {
-        return author;
+        return getAVUser("author", MyUser.class);
     }
 
     public void setAuthor(MyUser author) {
-        this.author = author;
+        put("author", author);
     }
 }

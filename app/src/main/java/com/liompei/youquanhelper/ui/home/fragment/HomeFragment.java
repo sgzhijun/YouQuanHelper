@@ -6,6 +6,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVQuery;
+import com.avos.avoscloud.FindCallback;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.liompei.youquanhelper.R;
@@ -18,10 +21,6 @@ import com.liompei.youquanhelper.ui.home.adapter.HomeAdapter;
 import com.liompei.zxlog.Zx;
 
 import java.util.List;
-
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
 
 /**
  * Created by Liompei
@@ -96,15 +95,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void netGetMainList() {
-        BmobQuery<CircleListBean> bmobQuery = new BmobQuery<>();
-        bmobQuery.setLimit(16);  //查询15条数据
-        bmobQuery.setSkip(count * 16);  //忽略前15条数据
-        bmobQuery.order("-createdAt");  //根据时间降序排列
-        Zx.d("忽略前" + count * 16 + "条数据");
-        bmobQuery.findObjects(new FindListener<CircleListBean>() {
+        AVQuery<CircleListBean> avQuery=AVQuery.getQuery(CircleListBean.class);
+        avQuery.setLimit(15);
+        avQuery.setSkip(count*15);
+        avQuery.findInBackground(new FindCallback<CircleListBean>() {
             @Override
-            public void done(List<CircleListBean> list, BmobException e) {
-                // object 就是 id 为 558e20cbe4b060308e3eb36c 的 对象实例
+            public void done(List<CircleListBean> list, AVException e) {
                 if (e == null) {
                     Zx.d("请求结束" + list.size());
                     if (count == 0) {
@@ -128,8 +124,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                         mXRrecycler.setNoMore(true);
                     }
                 } else {
-                    Zx.d("请求失败" + e.getErrorCode() + e.getMessage());
-                    Zx.show("请求失败" + e.getErrorCode() + e.getMessage());
+                    Zx.d("请求失败" +  e.getMessage());
+                    Zx.show("请求失败" + e.getMessage());
                     Zx.e("BmobException: " + count);
                     if (count == 0) {
                         mXRrecycler.refreshComplete();

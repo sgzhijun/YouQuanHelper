@@ -7,18 +7,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVQuery;
+import com.avos.avoscloud.GetCallback;
+import com.avos.avoscloud.SaveCallback;
 import com.liompei.youquanhelper.R;
 import com.liompei.youquanhelper.base.BaseActivity;
 import com.liompei.youquanhelper.bean.MyUser;
 import com.liompei.youquanhelper.bean.MyWalletBean;
 import com.liompei.zxlog.Zx;
-
-import java.util.List;
-
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.SaveListener;
 
 /**
  * Created by Liompei
@@ -93,28 +90,26 @@ public class MyWalletActivity extends BaseActivity implements View.OnClickListen
 
     private void netBalance() {
         showProgress();
-        BmobQuery<MyWalletBean> bmobQuery = new BmobQuery<>();
-        //查询包含我的余额
-        bmobQuery.addWhereEqualTo("author", MyUser.getCurrentUser(MyUser.class));
-        bmobQuery.findObjects(new FindListener<MyWalletBean>() {
+        AVQuery<MyWalletBean> beanAVQuery = AVQuery.getQuery(MyWalletBean.class);
+        beanAVQuery.whereEqualTo("author", MyUser.getMyUser());
+        beanAVQuery.getFirstInBackground(new GetCallback<MyWalletBean>() {
             @Override
-            public void done(List<MyWalletBean> list, BmobException e) {
+            public void done(MyWalletBean myWalletBean, AVException e) {
                 if (e == null) {
-                    Zx.d(list.size());
-                    if (list.size() == 0) {
+                    if (myWalletBean == null) {
                         //插入余额表
                         Zx.d("需要创建表");
-                        netSaveBalanceTable();
+//                        netSaveBalanceTable();
                     } else {
                         dismissProgress();
                         //有余额表,则显示
-                        mMyWalletBean = list.get(0);
-                        tv_balance.setText(mMyWalletBean.getBalance().toString());
+                        mMyWalletBean = myWalletBean;
+                        tv_balance.setText(String.valueOf(mMyWalletBean.getBalance()));
                     }
                 } else {
                     dismissProgress();
-                    Zx.e(e.getErrorCode() + e.getMessage());
-                    Zx.show(e.getErrorCode() + e.getMessage());
+                    Zx.e(e.getMessage());
+                    Zx.show(e.getMessage());
                     finish();
                 }
             }
@@ -124,23 +119,21 @@ public class MyWalletActivity extends BaseActivity implements View.OnClickListen
     //没有表时创建一个表格
     private void netSaveBalanceTable() {
         final MyWalletBean myWalletBean = new MyWalletBean();
-        myWalletBean.setAuthor(MyUser.getCurrentUser(MyUser.class));
+        myWalletBean.setAuthor(MyUser.getMyUser());
         myWalletBean.setBalance(0);
-        myWalletBean.save(new SaveListener<String>() {
+        myWalletBean.saveInBackground(new SaveCallback() {
             @Override
-            public void done(String s, BmobException e) {
+            public void done(AVException e) {
                 dismissProgress();
                 if (e == null) {
-                    myWalletBean.setObjectId(s);
                     mMyWalletBean = myWalletBean;
-                    tv_balance.setText(mMyWalletBean.getBalance().toString());
-                    Zx.d("添加表格成功" + s);
+                    tv_balance.setText(String.valueOf(mMyWalletBean.getBalance()));
+                    Zx.d("添加表格成功" + myWalletBean.getObjectId());
                 } else {
-                    Zx.e(e.getErrorCode() + e.getMessage());
-                    Zx.show(e.getErrorCode() + e.getMessage());
+                    Zx.e(e.getMessage());
+                    Zx.show(e.getMessage());
                     finish();
                 }
-
             }
         });
     }

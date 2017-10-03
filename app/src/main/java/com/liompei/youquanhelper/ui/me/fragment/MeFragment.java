@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.liompei.youquanhelper.R;
 import com.liompei.youquanhelper.base.BaseFragment;
 import com.liompei.youquanhelper.bean.MyUser;
@@ -23,10 +22,6 @@ import com.liompei.youquanhelper.ui.me.activity.MyTaskActivity;
 import com.liompei.youquanhelper.ui.me.activity.MyWalletActivity;
 import com.liompei.youquanhelper.util.GlideUtils;
 import com.liompei.zxlog.Zx;
-
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FetchUserInfoListener;
-import cn.bmob.v3.listener.UpdateListener;
 
 /**
  * Created by Liompei
@@ -155,9 +150,9 @@ public class MeFragment extends BaseFragment implements View.OnClickListener, Sw
                     + r.getResourceTypeName(R.drawable.ic_default_head_24dp) + "/"
                     + r.getResourceEntryName(R.drawable.ic_default_head_24dp));
         } else {
-            profilePhotoUri = Uri.parse(myUser.getProfilePhoto().getFileUrl());
-            Zx.v(myUser.getProfilePhoto().getFilename());
-            Zx.v(myUser.getProfilePhoto().getFileUrl());
+            profilePhotoUri = Uri.parse(myUser.getProfilePhoto().getUrl());
+            Zx.v(myUser.getProfilePhoto().getName());
+            Zx.v(myUser.getProfilePhoto().getUrl());
         }
         GlideUtils.loadHead(iv_head, profilePhotoUri);
     }
@@ -165,35 +160,35 @@ public class MeFragment extends BaseFragment implements View.OnClickListener, Sw
     //从网络获取用户最新信息
     private void fetchUserJsonInfo() {
         Zx.d("从网络获取用户最新信息");
-        MyUser.fetchUserJsonInfo(new FetchUserInfoListener<String>() {
-            @Override
-            public void done(String result, BmobException e) {
-                if (e == null) {
-                    Zx.d("获取完成: " + result);
-                    MyUser myUser = new Gson().fromJson(result, MyUser.class);
-                    if (MyUser.getObjectByKey("username").equals(myUser.getUsername())) {
-                        myUser.setUsername(null);
-                    }
-                    myUser.update(MyUser.getCurrentUser().getObjectId(), new UpdateListener() {
-                        @Override
-                        public void done(BmobException e) {
-                            mSwipeRefreshLayout.setRefreshing(false);
-                            if (e == null) {
-                                Zx.d("更新到服务器完成");
-                                setUserData();
-                            } else {
-                                Zx.e(e.getErrorCode() + e.getMessage());
-                                Zx.show(e.getErrorCode() + e.getMessage());
-                            }
-                        }
-                    });
-                } else {
+//        MyUser.fetchUserJsonInfo(new FetchUserInfoListener<String>() {
+//            @Override
+//            public void done(String result, BmobException e) {
+//                if (e == null) {
+//                    Zx.d("获取完成: " + result);
+//                    MyUser myUser = new Gson().fromJson(result, MyUser.class);
+//                    if (MyUser.getObjectByKey("username").equals(myUser.getUsername())) {
+//                        myUser.setUsername(null);
+//                    }
+//                    myUser.update(MyUser.getCurrentUser().getObjectId(), new UpdateListener() {
+//                        @Override
+//                        public void done(BmobException e) {
+//                            mSwipeRefreshLayout.setRefreshing(false);
+//                            if (e == null) {
+//                                Zx.d("更新到服务器完成");
+//                                setUserData();
+//                            } else {
+//                                Zx.e(e.getErrorCode() + e.getMessage());
+//                                Zx.show(e.getErrorCode() + e.getMessage());
+//                            }
+//                        }
+//                    });
+//                } else {
                     mSwipeRefreshLayout.setRefreshing(false);
-                    Zx.e(e.getErrorCode() + e.getMessage());
-                    Zx.show("失败: "+e.getErrorCode() + e.getMessage());
-                }
-            }
-        });
+//                    Zx.e(e.getErrorCode() + e.getMessage());
+//                    Zx.show("失败: "+e.getErrorCode() + e.getMessage());
+//                }
+//            }
+//        });
     }
 
     //更新资料

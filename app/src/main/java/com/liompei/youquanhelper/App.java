@@ -3,9 +3,13 @@ package com.liompei.youquanhelper;
 import android.app.Activity;
 import android.support.multidex.MultiDexApplication;
 
+import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVUser;
 import com.liompei.youquanhelper.bean.CircleListBean;
+import com.liompei.youquanhelper.bean.MyUser;
+import com.liompei.youquanhelper.bean.MyWalletBean;
 import com.liompei.zxlog.Zx;
 import com.vondear.rxtools.RxUtils;
 
@@ -23,6 +27,7 @@ public class App extends MultiDexApplication {
 
     //***全局***
     public static App instance;
+
     public static App getInstance() {
         return instance;
     }
@@ -70,11 +75,16 @@ public class App extends MultiDexApplication {
     }
 
     private void initSDK() {
+        AVObject.registerSubclass(MyWalletBean.class);
+        AVObject.registerSubclass(MyUser.class);
         AVObject.registerSubclass(CircleListBean.class);
+        AVUser.alwaysUseSubUserClass(MyUser.class);
         // 初始化参数依次为 this, AppId, AppKey
-        AVOSCloud.initialize(this,"7NHNh8r3qmYShXBCqYriQjHF-gzGzoHsz","z499nWcuMIQdcRM2Lw8TeJNr");
+        AVOSCloud.initialize(this, "lGp3tpeEhbBSMFbfQJO5wWbh-gzGzoHsz", "WU05UvU9DJCdWIpSxBWxYGle");
         // 放在 SDK 初始化语句 AVOSCloud.initialize() 后面，只需要调用一次即可
         AVOSCloud.setDebugLogEnabled(true);
+        //开启统计
+        AVAnalytics.enableCrashReport(this, true);
     }
 
 }

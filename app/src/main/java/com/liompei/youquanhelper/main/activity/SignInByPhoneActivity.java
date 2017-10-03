@@ -8,17 +8,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVSMS;
+import com.avos.avoscloud.AVSMSOption;
+import com.avos.avoscloud.LogInCallback;
+import com.avos.avoscloud.RequestMobileCodeCallback;
 import com.liompei.youquanhelper.App;
 import com.liompei.youquanhelper.MainActivity;
 import com.liompei.youquanhelper.R;
 import com.liompei.youquanhelper.base.BaseActivity;
 import com.liompei.youquanhelper.bean.MyUser;
 import com.liompei.zxlog.Zx;
-
-import cn.bmob.v3.BmobSMS;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.LogInListener;
-import cn.bmob.v3.listener.QueryListener;
 
 /**
  * Created by Liompei
@@ -140,9 +140,16 @@ public class SignInByPhoneActivity extends BaseActivity implements View.OnClickL
 
     private void netGetCode(String phoneNumber) {
         //发送验证码
-        BmobSMS.requestSMSCode(phoneNumber, "模板名称", new QueryListener<Integer>() {
+        AVSMSOption avsmsOption = new AVSMSOption();
+        avsmsOption.setTemplateName("Normal");  //模板名称
+        avsmsOption.setSignatureName("友圈");  //签名名称
+        avsmsOption.setTtl(5);  //5分钟有效时间
+//        avsmsOption.setApplicationName("应用名称");
+
+//        avsmsOption.setOperation("某种操作");
+        AVSMS.requestSMSCodeInBackground(phoneNumber, avsmsOption, new RequestMobileCodeCallback() {
             @Override
-            public void done(Integer integer, BmobException e) {
+            public void done(AVException e) {
                 if (e == null) {//验证码发送成功
                     Zx.show("验证码发送成功");
                     Zx.i("验证码发送成功");
@@ -150,8 +157,8 @@ public class SignInByPhoneActivity extends BaseActivity implements View.OnClickL
                     countDownTimer.start();
                 } else {
                     tv_get_code.setEnabled(true);
-                    Zx.d(e.getErrorCode() + e.getMessage());
-                    Zx.show(e.getErrorCode() + e.getMessage());
+                    Zx.d(e.getMessage());
+                    Zx.show(e.getMessage());
                 }
             }
         });
@@ -159,18 +166,17 @@ public class SignInByPhoneActivity extends BaseActivity implements View.OnClickL
 
     private void netSignUp(String phoneNumber, String smsCode) {
         showProgress();
-
-        MyUser.signOrLoginByMobilePhone(phoneNumber, smsCode, new LogInListener<MyUser>() {
+        MyUser.signUpOrLoginByMobilePhoneInBackground(phoneNumber, smsCode, MyUser.class, new LogInCallback<MyUser>() {
             @Override
-            public void done(MyUser myUser, BmobException e) {
+            public void done(MyUser myUser, AVException e) {
                 dismissProgress();
                 if (e == null) {
                     Zx.i("用户登陆成功");
                     App.getInstance().finishAllActivity();
                     MainActivity.start(SignInByPhoneActivity.this);
                 } else {
-                    Zx.d(e.getErrorCode() + e.getMessage());
-                    Zx.show(e.getErrorCode() + e.getMessage());
+                    Zx.d(e.getMessage());
+                    Zx.show(e.getMessage());
                 }
             }
         });

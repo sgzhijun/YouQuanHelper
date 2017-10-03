@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 
+import com.avos.avoscloud.AVAnalytics;
 import com.liompei.youquanhelper.base.BaseActivity;
 import com.liompei.youquanhelper.ui.dashboard.fragment.DashboardFragment;
 import com.liompei.youquanhelper.ui.home.fragment.HomeFragment;
@@ -173,5 +174,17 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        AVAnalytics.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AVAnalytics.onResume(this);
     }
 }

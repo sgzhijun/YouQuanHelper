@@ -12,6 +12,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVFile;
+import com.avos.avoscloud.ProgressCallback;
+import com.avos.avoscloud.SaveCallback;
 import com.liompei.youquanhelper.R;
 import com.liompei.youquanhelper.base.BaseActivity;
 import com.liompei.youquanhelper.bean.MyUser;
@@ -24,11 +28,7 @@ import com.vondear.rxtools.view.dialog.RxDialogChooseImage;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
-
-import cn.bmob.v3.datatype.BmobFile;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.UpdateListener;
-import cn.bmob.v3.listener.UploadFileListener;
+import java.io.FileNotFoundException;
 
 import static com.vondear.rxtools.view.dialog.RxDialogChooseImage.LayoutType.TITLE;
 
@@ -124,7 +124,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
                             Zx.show("请输入内容");
                             return;
                         }
-                        if (MyUser.getObjectByKey("username").equals(dialogUsername.getStringContent())) {
+                        if (MyUser.getCurrentUser(MyUser.class).getUsername().equals(dialogUsername.getStringContent())) {
                             dialogUsername.dismiss();
                             return;
                         }
@@ -200,54 +200,58 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
 
     private void netUpdateProfile(final File profilePhoto) {
         showProgress();
+        Zx.d("图片路径: " +profilePhoto.getName());
         Zx.d("图片路径: " + profilePhoto.getAbsolutePath());
-        final BmobFile bmobFile = new BmobFile(profilePhoto);
-        bmobFile.upload(new UploadFileListener() {
-            @Override
-            public void done(BmobException e) {
-                if (e == null) {
-                    Zx.d("上传文件成功: " + bmobFile.getFileUrl());
-                    final MyUser myUser = new MyUser();
-                    myUser.setProfilePhoto(bmobFile);
-                    myUser.update(MyUser.getCurrentUser().getObjectId(), new UpdateListener() {
-                        @Override
-                        public void done(BmobException e) {
-                            dismissProgress();
-                            if (e == null) {
-                                Zx.show("头像上传成功");
-                                Zx.d("头像上传成功");
-                                needChanged = true;
-                                resultUri = Uri.fromFile(profilePhoto);
-                                GlideUtils.loadHead(iv_head, myUser.getProfilePhoto().getFileUrl());
-                            } else {
-                                Zx.show("头像上传失败");
-                                Zx.d("头像上传失败");
+
+        try {
+            final AVFile avFile = AVFile.withFile(profilePhoto.getName(), profilePhoto);
+            avFile.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(AVException e) {
+                    if (e == null) {
+                        Zx.d("上传文件成功: " + avFile.getUrl());
+                        final MyUser myUser = MyUser.getMyUser();
+                        myUser.setProfilePhoto(avFile);
+                        myUser.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(AVException e) {
+                                dismissProgress();
+                                if (e == null) {
+                                    Zx.show("头像上传成功");
+                                    Zx.d("头像上传成功");
+                                    needChanged = true;
+                                    resultUri = Uri.fromFile(profilePhoto);
+                                    GlideUtils.loadHead(iv_head, myUser.getProfilePhoto().getUrl());
+                                } else {
+                                    Zx.show("头像上传失败");
+                                    Zx.d("头像上传失败");
+                                }
                             }
-                        }
-                    });
-                } else {
-                    dismissProgress();
-                    Zx.show("头像上传失败" + e.getMessage());
-                    Zx.e("头像上传失败" + e.getMessage());
+                        });
+                    } else {
+                        dismissProgress();
+                        Zx.show("头像上传失败" + e.getMessage());
+                        Zx.e("头像上传失败" + e.getMessage());
+                    }
                 }
-            }
-
-            @Override
-            public void onProgress(Integer value) {
-                super.onProgress(value);
-                Zx.d("上传进度: " + value.toString());
-            }
-        });
-
+            }, new ProgressCallback() {
+                @Override
+                public void done(Integer integer) {
+                    Zx.d("上传进度: " + integer.toString());
+                }
+            });
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     private void netUpdateSex(Boolean sex) {
         showProgress();
-        final MyUser myUser = new MyUser();
+        final MyUser myUser = MyUser.getMyUser();
         myUser.setSex(sex);
-        myUser.update(MyUser.getCurrentUser().getObjectId(), new UpdateListener() {
+        myUser.saveInBackground(new SaveCallback() {
             @Override
-            public void done(BmobException e) {
+            public void done(AVException e) {
                 dismissProgress();
                 if (e == null) {
                     //设置性别
@@ -260,8 +264,8 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
                     Zx.e("修改成功");
                     Zx.show("修改成功");
                 } else {
-                    Zx.e(e.getErrorCode() + e.getMessage());
-                    Zx.show(e.getErrorCode() + e.getMessage());
+                    Zx.e(e.getMessage());
+                    Zx.show(e.getMessage());
                 }
             }
         });
@@ -269,11 +273,11 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
 
     private void netUpdateUsername(String username) {
         showProgress();
-        final MyUser myUser = new MyUser();
+        final MyUser myUser = MyUser.getMyUser();
         myUser.setUsername(username);
-        myUser.update(MyUser.getCurrentUser().getObjectId(), new UpdateListener() {
+        myUser.saveInBackground(new SaveCallback() {
             @Override
-            public void done(BmobException e) {
+            public void done(AVException e) {
                 dismissProgress();
                 if (e == null) {
                     needChanged = true;

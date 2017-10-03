@@ -8,14 +8,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.SaveCallback;
 import com.liompei.youquanhelper.R;
 import com.liompei.youquanhelper.base.BaseActivity;
 import com.liompei.youquanhelper.bean.MyUser;
 import com.liompei.youquanhelper.util.EditTextUtils;
 import com.liompei.zxlog.Zx;
-
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.UpdateListener;
 
 /**
  * Created by Liompei
@@ -118,11 +117,11 @@ public class EditWhatsUpActivity extends BaseActivity {
 
     private void netUpdateWhatsUp(String whatsUp) {
         showProgress();
-        MyUser myUser = new MyUser();
+        MyUser myUser = MyUser.getCurrentUser(MyUser.class);
         myUser.setWhatsUp(whatsUp);
-        myUser.update(MyUser.getCurrentUser().getObjectId(), new UpdateListener() {
+        myUser.saveInBackground(new SaveCallback() {
             @Override
-            public void done(BmobException e) {
+            public void done(AVException e) {
                 dismissProgress();
                 if (e == null) {
                     Zx.show("修改成功");

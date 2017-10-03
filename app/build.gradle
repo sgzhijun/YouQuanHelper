@@ -65,4 +65,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.1.1'
     compile ('cn.leancloud.android:avoscloud-sdk:v4.4.4')
+    compile ('cn.leancloud.android:avoscloud-statistics:v4.4.4')
 }

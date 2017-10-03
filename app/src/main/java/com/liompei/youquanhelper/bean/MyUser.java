@@ -55,4 +55,8 @@ public class MyUser extends AVUser {
     public void setProfilePhoto(AVFile profilePhoto) {
         put("profilePhoto", profilePhoto);
     }
+
+    public static MyUser getMyUser() {
+        return getCurrentUser(MyUser.class);
+    }
 }
