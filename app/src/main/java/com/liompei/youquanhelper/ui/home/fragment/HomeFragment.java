@@ -98,15 +98,21 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         AVQuery<CircleListBean> avQuery = AVQuery.getQuery(CircleListBean.class);
         avQuery.setLimit(15);
         avQuery.setSkip(count * 15);
-        avQuery.findInBackground(new FindCallback<CircleListBean>()
-
-        {
+        avQuery.include("author");
+        avQuery.findInBackground(new FindCallback<CircleListBean>() {
             @Override
             public void done(List<CircleListBean> list, AVException e) {
                 if (e == null) {
                     Zx.d("请求结束" + list.size());
                     if (count == 0) {
-                        Zx.d("刷新: 共有" + list.size() + "行数据");
+                        if (list.size() == 0) {
+                            toast("没有数据了");
+                        } else {
+                            Zx.d("刷新: 共有" + list.size() + "行数据");
+                            Zx.d(list.get(0).getAuthor().getUsername() + "");
+                            Zx.d("共有" + list.get(0).getFiles().size());
+                            Zx.d("" + list.get(0).getFiles().get(0));
+                        }
                         mXRrecycler.refreshComplete();
                         mHomeAdapter.setNewData(list);
                     } else {

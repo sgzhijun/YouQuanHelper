@@ -1,7 +1,6 @@
 package com.liompei.youquanhelper.bean;
 
 import com.avos.avoscloud.AVClassName;
-import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVObject;
 
 import java.util.List;
@@ -16,7 +15,7 @@ import java.util.List;
 public class CircleListBean extends AVObject {
 
     private String stringContent;  //文字内容
-    private List<AVFile> files;  //图片内容
+    private List<String> files;  //图片内容
     private MyUser author;  //作者
 
     public MyUser getAuthor() {
@@ -35,11 +34,11 @@ public class CircleListBean extends AVObject {
         put("stringContent", stringContent);
     }
 
-    public List<AVFile> getFiles() {
+    public List<String> getFiles() {
         return getList("files");
     }
 
-    public void setFiles(List<AVFile> AVFileList) {
-        put("files", AVFileList);
+    public void setFiles(List<String> files) {
+        put("files", files);
     }
 }

@@ -7,15 +7,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.Toolbar;
 
-import com.avos.avoscloud.AVFile;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.liompei.youquanhelper.R;
 import com.liompei.youquanhelper.base.BaseActivity;
 import com.liompei.youquanhelper.bean.CircleListBean;
-import com.liompei.youquanhelper.bean.MyUser;
-import com.liompei.zxlog.Zx;
-
-import java.util.List;
 
 /**
  * Created by Liompei
@@ -46,8 +41,6 @@ public class TemplateDetailsActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-        mToolbar = getToolbar("模板详情", true);
-        mToolbar.setBackgroundColor(getResources().getColor(R.color.weChatPrimary));
         mCircleListBean =  getIntent().getParcelableExtra("bean");
         mXRecyclerView = findView(R.id.x_recycler);
     }
@@ -70,8 +63,6 @@ public class TemplateDetailsActivity extends BaseActivity {
 
     //设置列数
     private void setSpanCount() {
-        Zx.d(((MyUser)mCircleListBean.getAVObject("author")).getObjectId());
-        Zx.d(((List<AVFile>)mCircleListBean.getList("files")).get(0).getObjectId());
         int size = mCircleListBean.getFiles().size();
         if (size == 0) {
             toast("没有图片的模板");

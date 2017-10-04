@@ -130,7 +130,7 @@ public class PublishSoupActivity extends BaseActivity implements View.OnClickLis
                     // 成功或失败处理...
                     if (e == null) {
                         Zx.d("上传成功" + count + "   " + avFile.getUrl());
-                        avFiles.add(avFile);
+                        avFiles.add(avFile.getUrl());
                         if (count + 1 < pathList.size()) {
                             Zx.d("需要继续上传");
                             count++;
@@ -162,7 +162,7 @@ public class PublishSoupActivity extends BaseActivity implements View.OnClickLis
 
     //1.上传文件
     int count = 0;
-    ArrayList<AVFile> avFiles;
+    List<String> avFiles;
 
     private void uploadBatch(final String stringContent, final List<String> pathList) {
         showProgress();
@@ -175,12 +175,11 @@ public class PublishSoupActivity extends BaseActivity implements View.OnClickLis
 
 
     //2.发表内容
-    private void netPublish(String stringContent, List<AVFile> avFiles) {
+    private void netPublish(String stringContent, List<String> avFiles) {
         CircleListBean circleListBean = new CircleListBean();
         circleListBean.setStringContent(stringContent);
         circleListBean.setAuthor(MyUser.getMyUser());
-        circleListBean.addAll("files",avFiles);
-//        circleListBean.setAVFileList(avFiles);
+        circleListBean.setFiles(avFiles);
         //添加一对一关联
         circleListBean.saveInBackground(new SaveCallback() {
             @Override
