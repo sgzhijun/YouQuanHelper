@@ -7,8 +7,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_marginLeft="@dimen/primary_padding_left"
-        android:layout_marginRight="@dimen/primary_padding_right"
         android:background="@color/divider"/>
 
 </LinearLayout>
