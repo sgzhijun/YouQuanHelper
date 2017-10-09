@@ -4,13 +4,15 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
-import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.liompei.youquanhelper.R;
 import com.liompei.youquanhelper.base.BaseActivity;
 import com.liompei.youquanhelper.bean.CircleListBean;
+import com.liompei.zxlog.Zx;
 
 /**
  * Created by Liompei
@@ -20,8 +22,11 @@ import com.liompei.youquanhelper.bean.CircleListBean;
  */
 public class TemplateDetailsActivity extends BaseActivity {
 
+
+    private SwipeRefreshLayout mRefreshLayout;
+    private RecyclerView mRecyclerView;
+
     private Toolbar mToolbar;
-    private XRecyclerView mXRecyclerView;
 
     private CircleListBean mCircleListBean;
     private int spanCount;  //根据图片数量适配不同列数
@@ -41,19 +46,18 @@ public class TemplateDetailsActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-        mCircleListBean =  getIntent().getParcelableExtra("bean");
-        mXRecyclerView = findView(R.id.x_recycler);
+        mCircleListBean = getIntent().getParcelableExtra("bean");
+        mRefreshLayout = findView(R.id.refresh);
+        mRecyclerView = findView(R.id.recycler);
     }
 
     @Override
     public void initData() {
         setSpanCount();
+        Zx.d(spanCount);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, spanCount);
-        mXRecyclerView.setLayoutManager(gridLayoutManager);
+        mRecyclerView.setLayoutManager(gridLayoutManager);
         Drawable dividerDrawable = ContextCompat.getDrawable(this, R.drawable.shape_color_cursor);
-        mXRecyclerView.addItemDecoration(mXRecyclerView.new DividerItemDecoration(dividerDrawable));
-        mXRecyclerView.setPullRefreshEnabled(false);
-        mXRecyclerView.setLoadingMoreEnabled(false);
     }
 
     @Override

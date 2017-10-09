@@ -141,9 +141,9 @@ public class SignInByPhoneActivity extends BaseActivity implements View.OnClickL
     private void netGetCode(String phoneNumber) {
         //发送验证码
         AVSMSOption avsmsOption = new AVSMSOption();
-        avsmsOption.setTemplateName("Normal");  //模板名称
-        avsmsOption.setSignatureName("友圈");  //签名名称
+        avsmsOption.setSignatureName("Normal");  //签名名称
         avsmsOption.setTtl(5);  //5分钟有效时间
+//        avsmsOption.setTemplateName("Normal");  //模板名称
 //        avsmsOption.setApplicationName("应用名称");
 
 //        avsmsOption.setOperation("某种操作");

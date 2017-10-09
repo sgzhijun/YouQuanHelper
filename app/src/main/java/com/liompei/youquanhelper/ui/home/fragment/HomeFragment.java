@@ -3,18 +3,18 @@ package com.liompei.youquanhelper.ui.home.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.FindCallback;
-import com.jcodecraeer.xrecyclerview.ProgressStyle;
-import com.jcodecraeer.xrecyclerview.XRecyclerView;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.liompei.youquanhelper.R;
 import com.liompei.youquanhelper.base.BaseFragment;
 import com.liompei.youquanhelper.bean.CircleListBean;
-import com.liompei.youquanhelper.listener.OnItemClickListener;
 import com.liompei.youquanhelper.ui.home.activity.PublishSoupActivity;
 import com.liompei.youquanhelper.ui.home.activity.TemplateDetailsActivity;
 import com.liompei.youquanhelper.ui.home.adapter.HomeAdapter;
@@ -31,7 +31,8 @@ import java.util.List;
 
 public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
-    private XRecyclerView mXRrecycler;
+    private SwipeRefreshLayout mRefreshLayout;
+    private RecyclerView mRecyclerView;
     private HomeAdapter mHomeAdapter;
     private int count = 0;
 
@@ -45,44 +46,44 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     @Override
     protected void initView(@Nullable Bundle savedInstanceState) {
         getToolbar("首页", false);
-        mXRrecycler = findView(R.id.x_recycler);
+        mRecyclerView = findView(R.id.recycler);
+        mRefreshLayout = findView(R.id.refresh);
         mFab = findView(R.id.fab);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
+        mHomeAdapter = new HomeAdapter();
+        mHomeAdapter.bindToRecyclerView(mRecyclerView);
     }
 
     @Override
     protected void initData() {
-        mHomeAdapter = new HomeAdapter();
         mFab.setOnClickListener(this);
-        mHomeAdapter.setOnItemClickListener(new OnItemClickListener() {
+        mHomeAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(int position) {
-                TemplateDetailsActivity.start(getBaseActivity(), mHomeAdapter.getItemData(position));
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                TemplateDetailsActivity.start(getBaseActivity(), mHomeAdapter.getItem(position));
             }
         });
     }
 
     @Override
     protected void onEvent() {
-        mXRrecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mXRrecycler.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        mXRrecycler.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
-        mXRrecycler.setAdapter(mHomeAdapter);
-        mXRrecycler.setLoadingListener(new XRecyclerView.LoadingListener() {
+        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 count = 0;
                 Zx.d("onRefresh: " + count);
                 netGetMainList();
             }
-
+        });
+        mHomeAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
-            public void onLoadMore() {
+            public void onLoadMoreRequested() {
                 count++;
                 Zx.d("onLoadMore: " + count);
                 netGetMainList();
             }
-        });
-        mXRrecycler.refresh();
+        }, mRecyclerView);
+        toRefresh();
     }
 
     @Override
@@ -92,6 +93,19 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 PublishSoupActivity.start(getBaseActivity());
                 break;
         }
+    }
+
+    //刷新
+    private void toRefresh() {
+        mRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                Zx.d("刷新");
+                count = 0;
+                mRefreshLayout.setRefreshing(true);
+                netGetMainList();
+            }
+        });
     }
 
     private void netGetMainList() {
@@ -113,33 +127,33 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                             Zx.d("共有" + list.get(0).getFiles().size());
                             Zx.d("" + list.get(0).getFiles().get(0));
                         }
-                        mXRrecycler.refreshComplete();
+                        mRefreshLayout.setRefreshing(false);
                         mHomeAdapter.setNewData(list);
                     } else {
                         Zx.d("上拉");
                         if (list.size() == 0) {
                             toast("没有更多数据了");
                             Zx.d("没有更多数据了");
-                            mXRrecycler.setNoMore(true);
+                            mHomeAdapter.loadMoreEnd();
                         } else {
                             Zx.d("加载" + count + "行数据");
-                            mXRrecycler.loadMoreComplete();
+                            mHomeAdapter.loadMoreComplete();
                             mHomeAdapter.addData(list);
                         }
                     }
                     if (list.size() < 15) {
                         Zx.d("list小于15,显示没有更多数据");
-                        mXRrecycler.setNoMore(true);
+                        mHomeAdapter.loadMoreEnd();
                     }
                 } else {
                     Zx.d("请求失败" + e.getMessage());
                     Zx.show("请求失败" + e.getMessage());
                     Zx.e("BmobException: " + count);
                     if (count == 0) {
-                        mXRrecycler.refreshComplete();
+                        mRefreshLayout.setRefreshing(false);
                     } else {
                         count--;
-                        mXRrecycler.loadMoreComplete();
+                        mHomeAdapter.loadMoreFail();
                     }
                 }
             }
