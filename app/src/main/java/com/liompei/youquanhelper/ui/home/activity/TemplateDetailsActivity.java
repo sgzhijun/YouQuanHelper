@@ -1,18 +1,18 @@
 package com.liompei.youquanhelper.ui.home.activity;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import android.view.View;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.liompei.youquanhelper.R;
 import com.liompei.youquanhelper.base.BaseActivity;
 import com.liompei.youquanhelper.bean.CircleListBean;
-import com.liompei.zxlog.Zx;
+import com.liompei.youquanhelper.ui.home.adapter.TemplateImageAdapter;
+import com.zhihu.matisse.internal.ui.widget.MediaGridInset;
 
 /**
  * Created by Liompei
@@ -25,8 +25,7 @@ public class TemplateDetailsActivity extends BaseActivity {
 
     private SwipeRefreshLayout mRefreshLayout;
     private RecyclerView mRecyclerView;
-
-    private Toolbar mToolbar;
+    private TemplateImageAdapter mTemplateImageAdapter;
 
     private CircleListBean mCircleListBean;
     private int spanCount;  //根据图片数量适配不同列数
@@ -46,23 +45,34 @@ public class TemplateDetailsActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
+        getToolbar("模板详情",true);
         mCircleListBean = getIntent().getParcelableExtra("bean");
         mRefreshLayout = findView(R.id.refresh);
         mRecyclerView = findView(R.id.recycler);
+        mTemplateImageAdapter =new TemplateImageAdapter();
+        mRefreshLayout.setEnabled(false);  //关闭下拉刷新
+        setSpanCount();
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, spanCount);
+        mRecyclerView.setLayoutManager(gridLayoutManager);
+        mRecyclerView.setHasFixedSize(true);
+        int spacing = getResources().getDimensionPixelSize(R.dimen.media_grid_spacing);
+        mRecyclerView.addItemDecoration(new MediaGridInset(spanCount, spacing, false));
+        mTemplateImageAdapter.bindToRecyclerView(mRecyclerView);
     }
 
     @Override
     public void initData() {
-        setSpanCount();
-        Zx.d(spanCount);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, spanCount);
-        mRecyclerView.setLayoutManager(gridLayoutManager);
-        Drawable dividerDrawable = ContextCompat.getDrawable(this, R.drawable.shape_color_cursor);
+        mTemplateImageAdapter.addData(mCircleListBean.getFiles());
     }
 
     @Override
     public void onEvent() {
+        mTemplateImageAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
+            }
+        });
     }
 
     //设置列数
@@ -71,7 +81,7 @@ public class TemplateDetailsActivity extends BaseActivity {
         if (size == 0) {
             toast("没有图片的模板");
         } else if (size == 1) {
-            spanCount = 1;
+            spanCount = 2;
         } else if (size == 2) {
             spanCount = 2;
         } else {

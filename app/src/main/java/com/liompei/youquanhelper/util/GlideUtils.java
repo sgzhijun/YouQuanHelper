@@ -51,9 +51,9 @@ public class GlideUtils {
     public static void loadPicture(ImageView imageView, @Nullable Object model){
         GlideApp.with(App.getInstance())
                 .load(model)
-//                .placeholder(R.drawable.ic_default_head_24dp)
+                .placeholder(R.drawable.ic_default_picture_24dp)
                 .centerCrop()
-//                .error(R.drawable.ic_default_head_24dp)
+                .error(R.drawable.ic_default_picture_24dp)
                 .priority(Priority.HIGH)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)  //不缓存
                 .into(imageView);

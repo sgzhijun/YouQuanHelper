@@ -17,7 +17,7 @@ import com.liompei.youquanhelper.base.BaseFragment;
 import com.liompei.youquanhelper.bean.CircleListBean;
 import com.liompei.youquanhelper.ui.home.activity.PublishSoupActivity;
 import com.liompei.youquanhelper.ui.home.activity.TemplateDetailsActivity;
-import com.liompei.youquanhelper.ui.home.adapter.HomeAdapter;
+import com.liompei.youquanhelper.ui.home.adapter.CircleListAdapter;
 import com.liompei.zxlog.Zx;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     private SwipeRefreshLayout mRefreshLayout;
     private RecyclerView mRecyclerView;
-    private HomeAdapter mHomeAdapter;
+    private CircleListAdapter mCircleListAdapter;
     private int count = 0;
 
     private FloatingActionButton mFab;
@@ -50,17 +50,17 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         mRefreshLayout = findView(R.id.refresh);
         mFab = findView(R.id.fab);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
-        mHomeAdapter = new HomeAdapter();
-        mHomeAdapter.bindToRecyclerView(mRecyclerView);
+        mCircleListAdapter = new CircleListAdapter();
+        mCircleListAdapter.bindToRecyclerView(mRecyclerView);
     }
 
     @Override
     protected void initData() {
         mFab.setOnClickListener(this);
-        mHomeAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        mCircleListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                TemplateDetailsActivity.start(getBaseActivity(), mHomeAdapter.getItem(position));
+                TemplateDetailsActivity.start(getBaseActivity(), mCircleListAdapter.getItem(position));
             }
         });
     }
@@ -75,7 +75,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 netGetMainList();
             }
         });
-        mHomeAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+        mCircleListAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
                 count++;
@@ -128,22 +128,22 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                             Zx.d("" + list.get(0).getFiles().get(0));
                         }
                         mRefreshLayout.setRefreshing(false);
-                        mHomeAdapter.setNewData(list);
+                        mCircleListAdapter.setNewData(list);
                     } else {
                         Zx.d("上拉");
                         if (list.size() == 0) {
                             toast("没有更多数据了");
                             Zx.d("没有更多数据了");
-                            mHomeAdapter.loadMoreEnd();
+                            mCircleListAdapter.loadMoreEnd();
                         } else {
                             Zx.d("加载" + count + "行数据");
-                            mHomeAdapter.loadMoreComplete();
-                            mHomeAdapter.addData(list);
+                            mCircleListAdapter.loadMoreComplete();
+                            mCircleListAdapter.addData(list);
                         }
                     }
                     if (list.size() < 15) {
                         Zx.d("list小于15,显示没有更多数据");
-                        mHomeAdapter.loadMoreEnd();
+                        mCircleListAdapter.loadMoreEnd();
                     }
                 } else {
                     Zx.d("请求失败" + e.getMessage());
@@ -153,7 +153,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                         mRefreshLayout.setRefreshing(false);
                     } else {
                         count--;
-                        mHomeAdapter.loadMoreFail();
+                        mCircleListAdapter.loadMoreFail();
                     }
                 }
             }
