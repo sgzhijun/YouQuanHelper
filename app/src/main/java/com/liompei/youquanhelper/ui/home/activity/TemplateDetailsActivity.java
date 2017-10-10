@@ -2,16 +2,19 @@ package com.liompei.youquanhelper.ui.home.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.liompei.youquanhelper.R;
 import com.liompei.youquanhelper.base.BaseActivity;
 import com.liompei.youquanhelper.bean.CircleListBean;
 import com.liompei.youquanhelper.ui.home.adapter.TemplateImageAdapter;
+import com.liompei.youquanhelper.util.ShareUtils;
+import com.liompei.zxlog.Zx;
 import com.zhihu.matisse.internal.ui.widget.MediaGridInset;
 
 /**
@@ -20,11 +23,14 @@ import com.zhihu.matisse.internal.ui.widget.MediaGridInset;
  * 1137694912@qq.com
  * remark:模板详情
  */
-public class TemplateDetailsActivity extends BaseActivity {
+public class TemplateDetailsActivity extends BaseActivity implements View.OnClickListener {
 
-
-    private SwipeRefreshLayout mRefreshLayout;
+    private TextView tv_content;  //内容文字
     private RecyclerView mRecyclerView;
+    private LinearLayout ll_collect;  //收藏
+    private TextView tv_collect;  //收藏文字
+    private TextView tv_rePost;  //转发到朋友圈
+
     private TemplateImageAdapter mTemplateImageAdapter;
 
     private CircleListBean mCircleListBean;
@@ -45,12 +51,14 @@ public class TemplateDetailsActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-        getToolbar("模板详情",true);
+        getToolbar("模板详情", true);
         mCircleListBean = getIntent().getParcelableExtra("bean");
-        mRefreshLayout = findView(R.id.refresh);
         mRecyclerView = findView(R.id.recycler);
-        mTemplateImageAdapter =new TemplateImageAdapter();
-        mRefreshLayout.setEnabled(false);  //关闭下拉刷新
+        tv_content = findView(R.id.tv_content);
+        ll_collect = findView(R.id.ll_collect);
+        tv_collect = findView(R.id.tv_collect);
+        tv_rePost = findView(R.id.tv_rePost);
+        mTemplateImageAdapter = new TemplateImageAdapter();
         setSpanCount();
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, spanCount);
         mRecyclerView.setLayoutManager(gridLayoutManager);
@@ -62,7 +70,14 @@ public class TemplateDetailsActivity extends BaseActivity {
 
     @Override
     public void initData() {
+        for (int i = 0; i < mCircleListBean.getFiles().size(); i++) {
+            Zx.d(mCircleListBean.getFiles().get(i));
+        }
+
+        tv_content.setText(mCircleListBean.getStringContent());
         mTemplateImageAdapter.addData(mCircleListBean.getFiles());
+        tv_rePost.setOnClickListener(this);
+        ll_collect.setOnClickListener(this);
     }
 
     @Override
@@ -70,9 +85,21 @@ public class TemplateDetailsActivity extends BaseActivity {
         mTemplateImageAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                Zx.d(adapter.getData());
             }
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.ll_collect:  //收藏
+
+                break;
+            case R.id.tv_rePost:  //转发
+                ShareUtils.share9PicsToWXCircle(mBaseActivity, mCircleListBean.getStringContent(), mCircleListBean.getFiles());
+                break;
+        }
     }
 
     //设置列数
@@ -88,4 +115,6 @@ public class TemplateDetailsActivity extends BaseActivity {
             spanCount = 3;
         }
     }
+
+
 }

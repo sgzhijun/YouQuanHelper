@@ -5,13 +5,14 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.liompei.youquanhelper.R;
-import com.liompei.youquanhelper.util.EditTextUtils;
 
 /**
  * Created by Liompei
@@ -43,8 +44,32 @@ public class EditUpdateDialog extends Dialog implements View.OnClickListener {
         mTvSure = view.findViewById(R.id.dialog_tv_sure);
         mTvCancel = view.findViewById(R.id.dialog_tv_cancel);
         mTvCancel.setOnClickListener(this);
-        EditTextUtils.setEditTextInhibitInputSpace(mEditText);  //禁止键入空格
+//        EditTextUtils.setEditTextInhibitInputSpace(mEditText);  //禁止键入空格
         setContentView(view);
+
+        mEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+//                if (null != editable) {
+//                    if(editable.toString().contains(" ")){
+//                        mEditText.setText(editable.toString().trim());
+//                        mEditText.setSelection(editable.toString().trim().length());
+//                    }
+//
+//                }
+
+            }
+        });
     }
 
     @Override

@@ -16,30 +16,49 @@
         app:theme="@style/ToolbarMenu"
         app:titleTextAppearance="@style/ToolbarTitleText"/>
 
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/refresh"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="4dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:scrollbars="none">
 
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </android.support.v4.widget.SwipeRefreshLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="15dp"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="24dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"/>
+        </LinearLayout>
+
+    </ScrollView>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp">
+        android:gravity="center_vertical"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp">
 
-        <TextView
+
+        <LinearLayout
+            android:id="@+id/ll_collect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -47,12 +66,28 @@
             android:layout_weight="1"
             android:background="@drawable/selector_button_touch_oval"
             android:gravity="center"
-            android:padding="5dp"
-            android:text="收藏"
-            android:textColor="@color/white"/>
+            android:orientation="horizontal"
+            android:paddingBottom="8dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="8dp">
+
+            <TextView
+                android:id="@+id/tv_collect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/selector_button_touch_oval"
+                android:gravity="center"
+                android:text="收藏"
+                android:textColor="@color/white"/>
+
+        </LinearLayout>
 
 
         <TextView
+            android:id="@+id/tv_rePost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -60,7 +95,10 @@
             android:layout_weight="1"
             android:background="@drawable/selector_button_touch_oval"
             android:gravity="center"
-            android:padding="5dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="8dp"
             android:text="转发到朋友圈"
             android:textColor="@color/white"/>
 

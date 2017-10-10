@@ -5,10 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 
 import com.liompei.youquanhelper.R;
 import com.liompei.youquanhelper.util.GlideUtils;
@@ -89,54 +86,10 @@ public class GvPictureAdapter extends BaseAdapter {
     }
 
 
-    public void setListViewHeightBasedOnChildren(GridView gridView) {
-        //获取gridView的Adapter
-        ListAdapter listAdapter = gridView.getAdapter();
-        if (listAdapter == null) {
-            return;
-        }
-        //固定列宽,有多少列
-        int col = 3; //gridView每四个为一列
-        int totalHeight = 0;
-        int totalWidth = 0;
-        //i每次加4,相当于count小于4时,循环一次,计算一次item高度
-        //小于8时计算两次高度相加
-        for (int i = 0; i < listAdapter.getCount(); i += col) {
-            //获取gridView的每一个item
-            View listItem = listAdapter.getView(i, null, gridView);
-            listItem.measure(0, 0);
-            listItem.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-            //获取item的高度和
-            totalHeight += listItem.getMeasuredHeight();
-        }
-        //
-        if (listAdapter.getCount() < 3) {
-            for (int i = 0; i < listAdapter.getCount(); i++) {
-                View listItem = listAdapter.getView(i, null, gridView);
-                listItem.measure(0, 0);
-                Zx.d(listItem.getMeasuredWidth());
-                totalWidth += listItem.getMeasuredWidth();
-            }
-        } else {
-            View listItem = listAdapter.getView(0, null, gridView);
-            listItem.measure(0, 0);
-            totalWidth += (listItem.getMeasuredWidth() * 3);
-        }
 
-        //获取gridView的布局参数
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) gridView.getLayoutParams();
-        Zx.d("height: " + totalHeight);
-        Zx.d("width: " + totalWidth);
-        //设置高度
-        params.height = totalHeight;
-        params.width = totalWidth;
-        //设置margin
-//        ((ViewGroup.MarginLayoutParams) params).setMargins(40, 40, 40, 40);
-        //设置参数
-        gridView.setLayoutParams(params);
-        notifyDataSetChanged();
-    }
+
+
+
 
 
    protected class MyHolder {

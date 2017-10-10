@@ -62,11 +62,17 @@
                     android:text=""
                     android:textSize="@dimen/so_big_textSize"/>
 
-                <GridView
+                <com.liompei.youquanhelper.ui.widget.MyGridView
                     android:id="@+id/gv_picture"
-                    android:layout_width="wrap_content"
+                    android:layout_width="250dp"
                     android:layout_height="wrap_content"
-                    android:numColumns="3"/>
+                    android:layout_margin="5dp"
+                    android:cacheColorHint="#00000000"
+                    android:horizontalSpacing="5dp"
+                    android:listSelector="#00000000"
+                    android:numColumns="3"
+                    android:scrollbars="none"
+                    android:verticalSpacing="5dp"/>
 
 
             </LinearLayout>

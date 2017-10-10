@@ -233,7 +233,6 @@ public class PublishSoupActivity extends BaseActivity implements View.OnClickLis
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
             mGvPictureAdapter.addDataList(Matisse.obtainPathResult(data));
-            mGvPictureAdapter.setListViewHeightBasedOnChildren(mGvPictureView);
         }
     }
 
