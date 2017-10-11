@@ -1,7 +1,11 @@
 package com.liompei.youquanhelper.network.download;
 
-import android.content.Context;
-import android.util.Log;
+import android.os.AsyncTask;
+import android.os.Environment;
+
+import com.liompei.youquanhelper.network.APIFunction;
+import com.liompei.youquanhelper.network.config.HttpConfig;
+import com.liompei.zxlog.Zx;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -10,6 +14,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by Liompei
@@ -20,39 +32,65 @@ import okhttp3.ResponseBody;
 
 public class DownLoadManager {
 
-    private static final String TAG = "DownLoadManager";
+    private static DownLoadManager instance;
 
-    private static String APK_CONTENTTYPE = "application/vnd.android.package-archive";
 
-    private static String PNG_CONTENTTYPE = "image/png";
+    public static DownLoadManager getInstance() {
 
-    private static String JPG_CONTENTTYPE = "image/jpg";
-
-    private static String fileSuffix = "";
-
-    public static boolean writeResponseBodyToDisk(Context context, ResponseBody body) {
-
-        Log.d(TAG, "contentType:>>>>" + body.contentType().toString());
-
-        String type = body.contentType().toString();
-
-        if (type.equals(APK_CONTENTTYPE)) {
-
-            fileSuffix = ".apk";
-        } else if (type.equals(PNG_CONTENTTYPE)) {
-            fileSuffix = ".png";
+        if (instance == null) {
+            synchronized (DownLoadManager.class) {
+                instance = new DownLoadManager();
+            }
         }
+        return instance;
+    }
 
-        // 其他类型同上 自己判断加入.....
+    private Retrofit mRetrofit;
+    private APIFunction mAPIFunction;
+
+    private DownLoadManager() {
+
+        mRetrofit = new Retrofit.Builder()
+                .baseUrl(HttpConfig.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+        mAPIFunction = mRetrofit.create(APIFunction.class);
+    }
+
+    public void download(final String pictureUrl) {
+        new AsyncTask<Void, Long, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                Call<ResponseBody> bodyCall = mAPIFunction.downloadPicture(pictureUrl);
+                bodyCall.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        Zx.d("onResponse");
+                        Zx.d("下载成功");
+                        writeResponseBodyToDisk(response.body());
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                    }
+                });
 
 
-        String path = context.getExternalFilesDir(null) + File.separator + System.currentTimeMillis() + fileSuffix;
+                return null;
+            }
+        }.execute();
 
-        Log.d(TAG, "path:>>>>" + path);
+    }
 
+    private boolean writeResponseBodyToDisk(ResponseBody body) {
         try {
-            //  change the file location/name according to your needs
-            File futureStudioIconFile = new File(path);
+            File dirFirstFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "youQuan/downloadPicture/");
+            if (!dirFirstFolder.exists()) {
+                dirFirstFolder.mkdirs();//创建文件夹
+            }
+            File futureStudioIconFile = new File(Environment.getExternalStorageDirectory() + File.separator + "youQuan/downloadPicture/aaaaa.png");
 
             InputStream inputStream = null;
             OutputStream outputStream = null;
@@ -77,11 +115,10 @@ public class DownLoadManager {
 
                     fileSizeDownloaded += read;
 
-                    Log.d(TAG, "file download: " + fileSizeDownloaded + " of " + fileSize);
+                    Zx.d(TAG, "file download: " + fileSizeDownloaded + " of " + fileSize);
                 }
 
                 outputStream.flush();
-
 
                 return true;
             } catch (IOException e) {
@@ -98,7 +135,6 @@ public class DownLoadManager {
         } catch (IOException e) {
             return false;
         }
-
     }
 
 }

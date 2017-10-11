@@ -6,6 +6,7 @@ import com.liompei.youquanhelper.network.base.HttpResult;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -36,6 +37,7 @@ public interface APIFunction {
 
     @Streaming
     @GET
-    Observable<ResponseBody> downloadPicture(@Url String pictureUrl);
+    Call<ResponseBody> downloadPicture(@Url String pictureUrl);
+
 
 }

@@ -12,8 +12,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.liompei.youquanhelper.R;
 import com.liompei.youquanhelper.base.BaseActivity;
 import com.liompei.youquanhelper.bean.CircleListBean;
+import com.liompei.youquanhelper.network.download.DownLoadManager;
 import com.liompei.youquanhelper.ui.home.adapter.TemplateImageAdapter;
-import com.liompei.youquanhelper.util.ShareUtils;
 import com.liompei.zxlog.Zx;
 import com.zhihu.matisse.internal.ui.widget.MediaGridInset;
 
@@ -97,7 +97,8 @@ public class TemplateDetailsActivity extends BaseActivity implements View.OnClic
 
                 break;
             case R.id.tv_rePost:  //转发
-                ShareUtils.share9PicsToWXCircle(mBaseActivity, mCircleListBean.getStringContent(), mCircleListBean.getFiles());
+                DownLoadManager.getInstance().download(mCircleListBean.getFiles().get(0));
+//                ShareUtils.share9PicsToWXCircle(mBaseActivity, mCircleListBean.getStringContent(), mCircleListBean.getFiles());
                 break;
         }
     }
