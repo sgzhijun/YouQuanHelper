@@ -19,11 +19,6 @@ public interface OnDownloadListener<T> {
 
     void onFinish();
 
-    //开始下载
-    void onStart();
-
-    //停止下载
-    void onStop();
 
 
 }
