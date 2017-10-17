@@ -137,15 +137,14 @@ public class TemplateDetailsActivity extends RxBaseActivity implements View.OnCl
 
     private void netDownload(final int i, final String url) {
         Zx.d("开始启动netDownload");
+        if (!mDownloadProgress.isShowing()) {
+            Zx.e("show");
+            mDownloadProgress.show();
+        }
         DownLoadManager.getInstance(new DownloadProgressListener() {
             @Override
-            public void update(long read, long count, boolean done) {
+            public void update(final long read, final long count, boolean done) {
                 Zx.d("当前进度: " + read + "/" + count);
-//                mDownloadProgress.setTitle("正在下载第" + i + "张\n+进度" + read / count);
-//                if (!mDownloadProgress.isShowing()) {
-//                    mDownloadProgress.show();
-//                }
-
             }
         }).download(this, url, new OnDownloadListener<ResponseBody>() {
             @Override
@@ -160,23 +159,34 @@ public class TemplateDetailsActivity extends RxBaseActivity implements View.OnCl
                 Zx.d("长度: " + responseBody.contentLength());
                 Zx.d("类型" + responseBody.contentType());
                 Zx.d("开始下载");
-
+                mDownloadProgress.setTitle("正在下载第" + i+1 + "张");
 //                        Response response = client.newCall(request).execute();
                 BufferedSink sink = null;
                 try {
-                    File dirFirstFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "youCircle/");
+                    String cache = Environment.getExternalStorageDirectory() + File.separator + "youCircle/";
+                    File dirFirstFolder = new File(cache);
                     if (!dirFirstFolder.exists()) { //如果该文件夹不存在，则进行创建
+                        Zx.d("创建文件夹");
                         dirFirstFolder.mkdirs();//创建文件夹
                     }
-                    sink = Okio.buffer(Okio.sink(new File(Environment.getExternalStorageDirectory() + File.separator + "youCircle/" + url.substring(url.lastIndexOf("/")))));
+                    String path = Environment.getExternalStorageDirectory() + File.separator + "youCircle/" + url.substring(url.lastIndexOf("/"));
+                    sink = Okio.buffer(Okio.sink(new File(path)));
                     sink.writeAll(responseBody.source());
                     sink.close();
+
                     if (i + 1 == mCircleListBean.getFiles().size()) {
                         toast("下载完成");
-                        if (mDownloadProgress.isShowing()) {
-                            Zx.e("隐藏progress");
-                            mDownloadProgress.dismiss();
-                        }
+                        Zx.d("下载完成");
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (mDownloadProgress.isShowing()) {
+                                    Zx.e("隐藏progress");
+                                    mDownloadProgress.dismiss();
+                                }
+                            }
+                        });
+
                     }
                     Zx.e("结束");
                 } catch (FileNotFoundException e) {
