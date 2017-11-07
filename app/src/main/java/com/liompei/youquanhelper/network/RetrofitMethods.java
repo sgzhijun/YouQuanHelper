@@ -32,7 +32,7 @@ public class RetrofitMethods<T> implements Function<HttpResult<T>, HttpResult<T>
 
     private Retrofit mRetrofit;
     private OkHttpClient mHttpClient;
-    private APIFunction mAPIFunction;
+    private HttpService mHttpService;
 
     private static RetrofitMethods instance;
 
@@ -68,7 +68,7 @@ public class RetrofitMethods<T> implements Function<HttpResult<T>, HttpResult<T>
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
-        mAPIFunction = mRetrofit.create(APIFunction.class);
+        mHttpService = mRetrofit.create(HttpService.class);
     }
 
 
@@ -95,7 +95,7 @@ public class RetrofitMethods<T> implements Function<HttpResult<T>, HttpResult<T>
     //登录
     public void login(RxAppCompatActivity activity,String telNumber, String password, HttpCallback<T> httpCallback) {
 
-        toSubscribe(activity,mAPIFunction.login(telNumber, password), new MyObserver(activity, false, httpCallback));
+        toSubscribe(activity,mHttpService.login(telNumber, password), new MyObserver(activity, false, httpCallback));
     }
 
 

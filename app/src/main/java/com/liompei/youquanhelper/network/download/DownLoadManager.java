@@ -2,7 +2,7 @@ package com.liompei.youquanhelper.network.download;
 
 import android.os.AsyncTask;
 
-import com.liompei.youquanhelper.network.APIFunction;
+import com.liompei.youquanhelper.network.HttpService;
 import com.liompei.youquanhelper.network.config.HttpConfig;
 import com.trello.rxlifecycle2.RxLifecycle;
 import com.trello.rxlifecycle2.android.ActivityEvent;
@@ -41,7 +41,7 @@ public class DownLoadManager {
     }
 
     private Retrofit mRetrofit;
-    private APIFunction mAPIFunction;
+    private HttpService mAPIFunction;
 
     private DownLoadManager(DownloadProgressListener listener) {
         DownloadInterceptor interceptor = new DownloadInterceptor(listener);
@@ -56,7 +56,7 @@ public class DownLoadManager {
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
-        mAPIFunction = mRetrofit.create(APIFunction.class);
+        mAPIFunction = mRetrofit.create(HttpService.class);
     }
 
     public void download(final RxAppCompatActivity activity, final String pictureUrl, final OnDownloadListener<ResponseBody> downloadListener) {

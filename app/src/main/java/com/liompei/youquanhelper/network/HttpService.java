@@ -20,7 +20,7 @@ import retrofit2.http.Url;
  * remark:
  */
 
-public interface APIFunction {
+public interface HttpService {
 
     //模板
     @FormUrlEncoded
