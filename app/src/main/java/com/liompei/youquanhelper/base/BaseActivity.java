@@ -115,7 +115,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void dismissProgress() {
         if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
+            if (mProgressDialog.isShowing()){
+                mProgressDialog.dismiss();
+            }
         }
     }
 
