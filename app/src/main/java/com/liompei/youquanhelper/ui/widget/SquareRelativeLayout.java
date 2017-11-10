@@ -8,7 +8,7 @@ import android.widget.RelativeLayout;
  * Created by Liompei
  * Time 2017/10/9 21:40
  * 1137694912@qq.com
- * remark:
+ * remark:正方形
  */
 
 public class SquareRelativeLayout extends RelativeLayout {
