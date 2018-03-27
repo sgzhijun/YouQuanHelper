@@ -76,6 +76,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         mViewPager.addOnPageChangeListener(this);
         mViewPager.setCurrentItem(0);
 
+
     }
 
     @Override
